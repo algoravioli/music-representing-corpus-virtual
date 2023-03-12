@@ -5,10 +5,12 @@ from genere.helperfunctions import papersizefunctions
 import numpy as np
 
 
-def returnCanvas(paper_size, orientation, saveRawCanvas=False):
+def returnCanvas(paper_size, orientation, saveRawCanvas=False, indentation=False):
     width, height = papersizefunctions.getPaperSize(paper_size, orientation)
     canvas = Image.new("RGB", (width, height), "white")
-    canvas, staffLinesCoords = drawmanuscriptlines.DrawStaffLines(canvas)
+    canvas, staffLinesCoords = drawmanuscriptlines.DrawStaffLines(
+        canvas, indentation=indentation
+    )
     # Following is for debugging is PIL is messing up or not
     if saveRawCanvas:
         canvas.save("staffLinesOnly.png")
