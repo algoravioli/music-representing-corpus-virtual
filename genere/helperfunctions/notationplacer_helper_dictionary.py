@@ -109,7 +109,7 @@ def generateNotationHelperDictionaryFromGlobalMargins(
 
     systemY_end = systemY + (4 * GLOBAL_STAFF_INBETWEEN_SPACING_IN_PIXELS)
 
-    print("start_y: " + str(systemY) + " end_y: " + str(systemY_end))
+    # print("start_y: " + str(systemY) + " end_y: " + str(systemY_end))
 
     # we know that E is at systemY_end
     # so if we count downwards from E, we can find the height of the lowest note

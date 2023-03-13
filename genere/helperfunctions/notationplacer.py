@@ -1,6 +1,7 @@
 # %%
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 import numpy as np
+import matplotlib
 
 # import helper functions
 from genere.helperfunctions import papersizefunctions
@@ -268,6 +269,52 @@ class notationPlacer:
         canvas2 = canvas.copy()
         canvas2 = self.transparentPaste(trebleClef, canvas, box=(x, y))
         return canvas2
+
+    def addTitle(self, canvas, title, font="Geneva.ttf", fontsize=30, heightAdjust=10):
+        font = ImageFont.truetype(font, fontsize)
+
+        drawer = ImageDraw.Draw(canvas)
+        width, height = drawer.textsize(title, font=font)  # of the text
+        x_pos = int((canvas.size[0] - width) / 2)
+        y_pos = int(canvas.size[1] * (GLOBAL_MARGINS[1] * 0.4) - heightAdjust)
+        drawer.text((x_pos, y_pos), title, fill=(0, 0, 0), font=font)
+        return canvas
+
+    def addComposer(
+        self, canvas, composer, font="Geneva.ttf", fontsize=20, pageAlignValue=4.75
+    ):
+        font = ImageFont.truetype(font, fontsize)
+
+        drawer = ImageDraw.Draw(canvas)
+        width, height = drawer.textsize(composer, font=font)  # of the text
+        x_pos = int((canvas.size[0] - width) / 5) * pageAlignValue
+        y_pos = int(canvas.size[1] * (GLOBAL_MARGINS[1] * 0.65))
+        drawer.text((x_pos, y_pos), composer, fill=(0, 0, 0), font=font)
+        return canvas
+
+    def addInstrumentTextAtIndent(
+        self,
+        canvas,
+        instrument,
+        staffLineCoords,
+        system,
+        font="Geneva.ttf",
+        fontsize=20,
+    ):
+        font = ImageFont.truetype(font, fontsize)
+
+        drawer = ImageDraw.Draw(canvas)
+        width, height = drawer.textsize(instrument, font=font)
+
+        x_pos = staffLineCoords[system][0][0] - width
+        y_pos = (
+            ((staffLineCoords[system][1][1] - staffLineCoords[system][0][1]) - height)
+            / 2
+        ) + staffLineCoords[system][0][1]
+
+        drawer.text((x_pos, y_pos), instrument, fill=(0, 0, 0), font=font)
+
+        return canvas
 
 
 # %%

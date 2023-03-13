@@ -1,11 +1,11 @@
 from PIL import Image, ImageDraw
 from pprint import pprint
 
-GLOBAL_MARGINS = [35 / 559, 90 / 794]
+GLOBAL_MARGINS = [35 / 559, 120 / 794]
 GLOBAL_STAFF_MARGINS = 50 / 794
 GLOBAL_STAFF_INBETWEEN_SPACING_IN_PIXELS = 8  # best to be even number
 GLOBAL_LINE_THICKNESS = 2  # CAN ONLY BE INTEGERS
-GLOBAL_INDENTATION_IN_PIXELS = 30 / 559
+GLOBAL_INDENTATION_IN_PIXELS = 137 / 559
 
 
 def OneSetOfLines(canvas, start_x, start_y, count=1, indentation_or_not=False):
@@ -65,7 +65,7 @@ def DrawStaffLines(canvas, staff_margin=GLOBAL_STAFF_MARGINS, indentation=False)
             if currentEntry > (
                 height
                 # - (3 * GLOBAL_STAFF_INBETWEEN_SPACING_IN_PIXELS)
-                - (GLOBAL_MARGINS[1] * height)
+                - (GLOBAL_MARGINS[1] * height * 0.66)
             ):
                 calcFlag = False
 
