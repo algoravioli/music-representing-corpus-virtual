@@ -22,7 +22,7 @@ pprint(staffLineCoords)
 # add title for page
 canvas = noter.addTitle(canvas, "This Kind of Graphic Score")
 canvas = noter.addComposer(
-    canvas, "Composer Name", pageAlignValue=4.75
+    canvas, "You", pageAlignValue=4.75
 )  # adjust this page align value to move the composer name
 canvas = noter.addInstrumentTextAtIndent(
     canvas, "Instrument Name   ", staffLineCoords, 0
