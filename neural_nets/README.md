@@ -7,3 +7,7 @@ Factorized Piano Music Modeling and Generation with the MAESTRO Dataset."
 In International Conference on Learning Representations, 2019.
 
 This model is not trained to be a piano music generation model, rather, it uses the data as an input for continuous musical generation under some form on control parameters.
+
+Neural Net 2: Audio Realtime Synthesis based on Saxophone Multiphonics Data.
+The data can be found under `./saxophone_audiodata/multiphonics`.
+One can try varying the model sizes and training on this dataset to generate audio data through the waveform-gen-plugin.
