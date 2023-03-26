@@ -22,31 +22,34 @@ inputArray, outputArray, Fs = Ingester().ingest_audio_for_neural_net2(
 )
 # %%
 model.fit(inputArray, outputArray, epochs=50, batch_size=100, verbose=1)
-# %%
-
-# Since each timestep is 16 samples, we will need to have intended length in samples / 16 as the amount of iterations we need.
-# We will also need to have a buffer of 16 samples to start with.
-# Lets start with random noise as the input
-Fs = 44100
-length_of_output = 44100 * 5  # 5 seconds
-number_of_predictions = length_of_output // 16
-buffer = np.random.rand(16)
-output = np.array([])
-for i in tqdm(range(number_of_predictions)):
-    # Predict the next 16 samples
-    prediction = model.predict(buffer.reshape(1, 16))
-    # Append the prediction to the output
-    output = np.append(output, prediction)
-    # Change input buffer to be the last 16 samples of the output
-    buffer = output[-16:]
 
 # %%
 # use save model from RTNeuralutils
 save_model(model, "saved_models_json/neural_net2.json")
 # also use built in tensorflow save model
 model.save("saved_models_h5/neural_net2.h5")
+
 # %%
-plt.plot(output[0:1000])
+
+# Since each timestep is 16 samples, we will need to have intended length in samples / 16 as the amount of iterations we need.
+# We create a random noise buffer of 16 samples * the amount of iterations needed
+
+lengthOfNote = 0.5  # seconds
+Fs = 44100
+iterations = int(lengthOfNote * Fs / 16)
+noiseBuffer = np.random.uniform(-1, 1, 16 * iterations)
+
+# We need to reshape this into a 2D array of shape (iterations, 16)
+noiseBuffer = noiseBuffer.reshape(iterations, 16)
+# Now we can use this noiseBuffer as the input to our model, and concatenate the outputs to create our intended output
+output = np.array([])
+for i in tqdm(range(iterations)):
+    currentOutput = model.predict(noiseBuffer[i].reshape(1, 16), verbose=0)
+    output = np.concatenate((output, currentOutput[0]))
+
+# Check what the output looks like
+plt.plot(output[0:10000])
+# we can also write this output to a wav file
 write("audio_output/neural_net2.wav", Fs, output)
 
 # %%
