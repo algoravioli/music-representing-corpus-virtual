@@ -27,7 +27,7 @@ class Ingester:
         self.midiObject = pretty_midi.PrettyMIDI(path)
         return self.midiObject
 
-    def ingest_audio_for_neural_net2(self, path):
+    def ingest_audio_for_neural_net2(self, path, block_size=1000):
         # Path is a directory containing wav files
         trainingFiles = os.listdir(path)
         if ".DS_Store" in trainingFiles:
@@ -42,21 +42,21 @@ class Ingester:
             print(f"File No. {i + 1} of {len(trainingFiles)}")
 
             self.audio, self.sr = librosa.load(trainingFiles[i])
-            self.delayedAudio = np.roll(self.audio, -16)
-            # remove first 16 samples from both self.audio and self.delayed_audio
-            self.audio = self.audio[16:]
-            self.delayedAudio = self.delayedAudio[16:]
-            # remove last 16 samples from both self.audio and self.delayed_audio
-            self.audio = self.audio[:-16]
-            self.delayedAudio = self.delayedAudio[:-16]
+            self.delayedAudio = np.roll(self.audio, -block_size)
+            # remove first block_size samples from both self.audio and self.delayed_audio
+            self.audio = self.audio[block_size:]
+            self.delayedAudio = self.delayedAudio[block_size:]
+            # remove last block_size samples from both self.audio and self.delayed_audio
+            self.audio = self.audio[:-block_size]
+            self.delayedAudio = self.delayedAudio[:-block_size]
 
-            # reshape input and output to be 2D arrays of shape (n, 16)
-            # batches of 16 samples each
-            n = len(self.audio) // 16
-            currentInput = self.audio[: n * 16]
-            currentOutput = self.delayedAudio[: n * 16]
-            currentInput = currentInput.reshape(n, 16)
-            currentOutput = currentOutput.reshape(n, 16)
+            # reshape input and output to be 2D arrays of shape (n, block_size)
+            # batches of block_size samples each
+            n = len(self.audio) // block_size
+            currentInput = self.audio[: n * block_size]
+            currentOutput = self.delayedAudio[: n * block_size]
+            currentInput = currentInput.reshape(n, block_size)
+            currentOutput = currentOutput.reshape(n, block_size)
 
             if i == 0:
                 inputArray = currentInput
