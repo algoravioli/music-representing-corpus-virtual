@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DecentSampler>
+	<ui bgImage="Samples/background.png" width="812" height="375" layoutMode="relative" bgMode="top_left"> + "
+"		<tab name="main">
+			<labeled-knob x="385" y="75" width="90" textSize="16" textColor="AA000000" trackForegroundColor="CC000000" trackBackgroundColor="66999999" label="Attack" type="float" minValue="0.01" maxValue="4.0" value="0.0">
+				<binding type="amp" level="instrument" position="0" parameter="ENV_ATTACK"/>
+			</labeled-knob>
+			<labeled-knob x="450" y="75" width="90" textSize="16" textColor="AA000000" trackForegroundColor="CC000000" trackBackgroundColor="66999999" label="Decay" type="float" minValue="0.0" maxValue="4.0" value="0.0">
+				<binding type="amp" level="instrument" position="0" parameter="ENV_DECAY"/>
+			</labeled-knob>
+			<labeled-knob x="515" y="75" width="90" textSize="16" textColor="AA000000" trackForegroundColor="CC000000" trackBackgroundColor="66999999" label="Sustain" type="float" minValue="0.0" maxValue="1.0" value="1.0">
+				<binding type="amp" level="instrument" position="0" parameter="ENV_SUSTAIN"/>
+			</labeled-knob>
+			<labeled-knob x="580" y="75" width="90" textSize="16" textColor="AA000000" trackForegroundColor="CC000000" trackBackgroundColor="66999999" label="Release" type="float" minValue="0.0" maxValue="20.0" value="0.0">
+				<binding type="amp" level="instrument" position="0" parameter="ENV_RELEASE"/>
+			</labeled-knob>
+		</tab>
+	</ui>
+	<groups attack="0.3" decay="0.5" sustain="1.0" release="2">
+		<group>
+			<sample rootNote="0" loNote="0" hiNote="0" loopEnabled="True" path="Samples/noteNumber_121.wav"/>
+			<sample rootNote="1" loNote="1" hiNote="1" loopEnabled="True" path="Samples/noteNumber_109.wav"/>
+			<sample rootNote="2" loNote="2" hiNote="2" loopEnabled="True" path="Samples/noteNumber_58.wav"/>
+			<sample rootNote="3" loNote="3" hiNote="3" loopEnabled="True" path="Samples/noteNumber_64.wav"/>
+			<sample rootNote="4" loNote="4" hiNote="4" loopEnabled="True" path="Samples/noteNumber_70.wav"/>
+			<sample rootNote="5" loNote="5" hiNote="5" loopEnabled="True" path="Samples/noteNumber_71.wav"/>
+			<sample rootNote="6" loNote="6" hiNote="6" loopEnabled="True" path="Samples/noteNumber_65.wav"/>
+			<sample rootNote="7" loNote="7" hiNote="7" loopEnabled="True" path="Samples/noteNumber_59.wav"/>
+			<sample rootNote="8" loNote="8" hiNote="8" loopEnabled="True" path="Samples/noteNumber_108.wav"/>
+			<sample rootNote="9" loNote="9" hiNote="9" loopEnabled="True" path="Samples/noteNumber_120.wav"/>
+			<sample rootNote="10" loNote="10" hiNote="10" loopEnabled="True" path="Samples/noteNumber_122.wav"/>
+			<sample rootNote="11" loNote="11" hiNote="11" loopEnabled="True" path="Samples/noteNumber_73.wav"/>
+			<sample rootNote="12" loNote="12" hiNote="12" loopEnabled="True" path="Samples/noteNumber_67.wav"/>
+			<sample rootNote="13" loNote="13" hiNote="13" loopEnabled="True" path="Samples/noteNumber_98.wav"/>
+			<sample rootNote="14" loNote="14" hiNote="14" loopEnabled="True" path="Samples/noteNumber_99.wav"/>
+			<sample rootNote="15" loNote="15" hiNote="15" loopEnabled="True" path="Samples/noteNumber_66.wav"/>
+			<sample rootNote="16" loNote="16" hiNote="16" loopEnabled="True" path="Samples/noteNumber_72.wav"/>
+			<sample rootNote="17" loNote="17" hiNote="17" loopEnabled="True" path="Samples/noteNumber_123.wav"/>
+			<sample rootNote="18" loNote="18" hiNote="18" loopEnabled="True" path="Samples/noteNumber_76.wav"/>
+			<sample rootNote="19" loNote="19" hiNote="19" loopEnabled="True" path="Samples/noteNumber_62.wav"/>
+			<sample rootNote="20" loNote="20" hiNote="20" loopEnabled="True" path="Samples/noteNumber_89.wav"/>
+			<sample rootNote="21" loNote="21" hiNote="21" loopEnabled="True" path="Samples/noteNumber_9.wav"/>
+			<sample rootNote="22" loNote="22" hiNote="22" loopEnabled="True" path="Samples/noteNumber_8.wav"/>
+			<sample rootNote="23" loNote="23" hiNote="23" loopEnabled="True" path="Samples/noteNumber_88.wav"/>
+			<sample rootNote="24" loNote="24" hiNote="24" loopEnabled="True" path="Samples/noteNumber_63.wav"/>
+			<sample rootNote="25" loNote="25" hiNote="25" loopEnabled="True" path="Samples/noteNumber_77.wav"/>
+			<sample rootNote="26" loNote="26" hiNote="26" loopEnabled="True" path="Samples/noteNumber_126.wav"/>
+			<sample rootNote="27" loNote="27" hiNote="27" loopEnabled="True" path="Samples/noteNumber_118.wav"/>
+			<sample rootNote="28" loNote="28" hiNote="28" loopEnabled="True" path="Samples/noteNumber_124.wav"/>
+			<sample rootNote="29" loNote="29" hiNote="29" loopEnabled="True" path="Samples/noteNumber_61.wav"/>
+			<sample rootNote="30" loNote="30" hiNote="30" loopEnabled="True" path="Samples/noteNumber_75.wav"/>
+			<sample rootNote="31" loNote="31" hiNote="31" loopEnabled="True" path="Samples/noteNumber_49.wav"/>
+			<sample rootNote="32" loNote="32" hiNote="32" loopEnabled="True" path="Samples/noteNumber_48.wav"/>
+			<sample rootNote="33" loNote="33" hiNote="33" loopEnabled="True" path="Samples/noteNumber_74.wav"/>
+			<sample rootNote="34" loNote="34" hiNote="34" loopEnabled="True" path="Samples/noteNumber_60.wav"/>
+			<sample rootNote="35" loNote="35" hiNote="35" loopEnabled="True" path="Samples/noteNumber_125.wav"/>
+			<sample rootNote="36" loNote="36" hiNote="36" loopEnabled="True" path="Samples/noteNumber_119.wav"/>
+			<sample rootNote="37" loNote="37" hiNote="37" loopEnabled="True" path="Samples/noteNumber_13.wav"/>
+			<sample rootNote="38" loNote="38" hiNote="38" loopEnabled="True" path="Samples/noteNumber_12.wav"/>
+			<sample rootNote="39" loNote="39" hiNote="39" loopEnabled="True" path="Samples/noteNumber_38.wav"/>
+			<sample rootNote="40" loNote="40" hiNote="40" loopEnabled="True" path="Samples/noteNumber_10.wav"/>
+			<sample rootNote="41" loNote="41" hiNote="41" loopEnabled="True" path="Samples/noteNumber_11.wav"/>
+			<sample rootNote="42" loNote="42" hiNote="42" loopEnabled="True" path="Samples/noteNumber_39.wav"/>
+			<sample rootNote="43" loNote="43" hiNote="43" loopEnabled="True" path="Samples/noteNumber_15.wav"/>
+			<sample rootNote="44" loNote="44" hiNote="44" loopEnabled="True" path="Samples/noteNumber_29.wav"/>
+			<sample rootNote="45" loNote="45" hiNote="45" loopEnabled="True" path="Samples/noteNumber_28.wav"/>
+			<sample rootNote="46" loNote="46" hiNote="46" loopEnabled="True" path="Samples/noteNumber_14.wav"/>
+			<sample rootNote="47" loNote="47" hiNote="47" loopEnabled="True" path="Samples/noteNumber_16.wav"/>
+			<sample rootNote="48" loNote="48" hiNote="48" loopEnabled="True" path="Samples/noteNumber_17.wav"/>
+			<sample rootNote="49" loNote="49" hiNote="49" loopEnabled="True" path="Samples/noteNumber_26.wav"/>
+			<sample rootNote="50" loNote="50" hiNote="50" loopEnabled="True" path="Samples/noteNumber_32.wav"/>
+			<sample rootNote="51" loNote="51" hiNote="51" loopEnabled="True" path="Samples/noteNumber_33.wav"/>
+			<sample rootNote="52" loNote="52" hiNote="52" loopEnabled="True" path="Samples/noteNumber_27.wav"/>
+			<sample rootNote="53" loNote="53" hiNote="53" loopEnabled="True" path="Samples/noteNumber_19.wav"/>
+			<sample rootNote="54" loNote="54" hiNote="54" loopEnabled="True" path="Samples/noteNumber_31.wav"/>
+			<sample rootNote="55" loNote="55" hiNote="55" loopEnabled="True" path="Samples/noteNumber_25.wav"/>
+			<sample rootNote="56" loNote="56" hiNote="56" loopEnabled="True" path="Samples/noteNumber_24.wav"/>
+			<sample rootNote="57" loNote="57" hiNote="57" loopEnabled="True" path="Samples/noteNumber_30.wav"/>
+			<sample rootNote="58" loNote="58" hiNote="58" loopEnabled="True" path="Samples/noteNumber_18.wav"/>
+			<sample rootNote="59" loNote="59" hiNote="59" loopEnabled="True" path="Samples/noteNumber_34.wav"/>
+			<sample rootNote="60" loNote="60" hiNote="60" loopEnabled="True" path="Samples/noteNumber_20.wav"/>
+			<sample rootNote="61" loNote="61" hiNote="61" loopEnabled="True" path="Samples/noteNumber_21.wav"/>
+			<sample rootNote="62" loNote="62" hiNote="62" loopEnabled="True" path="Samples/noteNumber_35.wav"/>
+			<sample rootNote="63" loNote="63" hiNote="63" loopEnabled="True" path="Samples/noteNumber_23.wav"/>
+			<sample rootNote="64" loNote="64" hiNote="64" loopEnabled="True" path="Samples/noteNumber_37.wav"/>
+			<sample rootNote="65" loNote="65" hiNote="65" loopEnabled="True" path="Samples/noteNumber_36.wav"/>
+			<sample rootNote="66" loNote="66" hiNote="66" loopEnabled="True" path="Samples/noteNumber_22.wav"/>
+			<sample rootNote="67" loNote="67" hiNote="67" loopEnabled="True" path="Samples/noteNumber_114.wav"/>
+			<sample rootNote="68" loNote="68" hiNote="68" loopEnabled="True" path="Samples/noteNumber_100.wav"/>
+			<sample rootNote="69" loNote="69" hiNote="69" loopEnabled="True" path="Samples/noteNumber_79.wav"/>
+			<sample rootNote="70" loNote="70" hiNote="70" loopEnabled="True" path="Samples/noteNumber_45.wav"/>
+			<sample rootNote="71" loNote="71" hiNote="71" loopEnabled="True" path="Samples/noteNumber_51.wav"/>
+			<sample rootNote="72" loNote="72" hiNote="72" loopEnabled="True" path="Samples/noteNumber_86.wav"/>
+			<sample rootNote="73" loNote="73" hiNote="73" loopEnabled="True" path="Samples/noteNumber_6.wav"/>
+			<sample rootNote="74" loNote="74" hiNote="74" loopEnabled="True" path="Samples/noteNumber_92.wav"/>
+			<sample rootNote="75" loNote="75" hiNote="75" loopEnabled="True" path="Samples/noteNumber_93.wav"/>
+			<sample rootNote="76" loNote="76" hiNote="76" loopEnabled="True" path="Samples/noteNumber_7.wav"/>
+			<sample rootNote="77" loNote="77" hiNote="77" loopEnabled="True" path="Samples/noteNumber_87.wav"/>
+			<sample rootNote="78" loNote="78" hiNote="78" loopEnabled="True" path="Samples/noteNumber_50.wav"/>
+			<sample rootNote="79" loNote="79" hiNote="79" loopEnabled="True" path="Samples/noteNumber_44.wav"/>
+			<sample rootNote="80" loNote="80" hiNote="80" loopEnabled="True" path="Samples/noteNumber_78.wav"/>
+			<sample rootNote="81" loNote="81" hiNote="81" loopEnabled="True" path="Samples/noteNumber_101.wav"/>
+			<sample rootNote="82" loNote="82" hiNote="82" loopEnabled="True" path="Samples/noteNumber_115.wav"/>
+			<sample rootNote="83" loNote="83" hiNote="83" loopEnabled="True" path="Samples/noteNumber_103.wav"/>
+			<sample rootNote="84" loNote="84" hiNote="84" loopEnabled="True" path="Samples/noteNumber_117.wav"/>
+			<sample rootNote="85" loNote="85" hiNote="85" loopEnabled="True" path="Samples/noteNumber_52.wav"/>
+			<sample rootNote="86" loNote="86" hiNote="86" loopEnabled="True" path="Samples/noteNumber_46.wav"/>
+			<sample rootNote="87" loNote="87" hiNote="87" loopEnabled="True" path="Samples/noteNumber_5.wav"/>
+			<sample rootNote="88" loNote="88" hiNote="88" loopEnabled="True" path="Samples/noteNumber_91.wav"/>
+			<sample rootNote="89" loNote="89" hiNote="89" loopEnabled="True" path="Samples/noteNumber_85.wav"/>
+			<sample rootNote="90" loNote="90" hiNote="90" loopEnabled="True" path="Samples/noteNumber_84.wav"/>
+			<sample rootNote="91" loNote="91" hiNote="91" loopEnabled="True" path="Samples/noteNumber_90.wav"/>
+			<sample rootNote="92" loNote="92" hiNote="92" loopEnabled="True" path="Samples/noteNumber_4.wav"/>
+			<sample rootNote="93" loNote="93" hiNote="93" loopEnabled="True" path="Samples/noteNumber_47.wav"/>
+			<sample rootNote="94" loNote="94" hiNote="94" loopEnabled="True" path="Samples/noteNumber_53.wav"/>
+			<sample rootNote="95" loNote="95" hiNote="95" loopEnabled="True" path="Samples/noteNumber_116.wav"/>
+			<sample rootNote="96" loNote="96" hiNote="96" loopEnabled="True" path="Samples/noteNumber_102.wav"/>
+			<sample rootNote="97" loNote="97" hiNote="97" loopEnabled="True" path="Samples/noteNumber_106.wav"/>
+			<sample rootNote="98" loNote="98" hiNote="98" loopEnabled="True" path="Samples/noteNumber_112.wav"/>
+			<sample rootNote="99" loNote="99" hiNote="99" loopEnabled="True" path="Samples/noteNumber_57.wav"/>
+			<sample rootNote="100" loNote="100" hiNote="100" loopEnabled="True" path="Samples/noteNumber_43.wav"/>
+			<sample rootNote="101" loNote="101" hiNote="101" loopEnabled="True" path="Samples/noteNumber_0.wav"/>
+			<sample rootNote="102" loNote="102" hiNote="102" loopEnabled="True" path="Samples/noteNumber_94.wav"/>
+			<sample rootNote="103" loNote="103" hiNote="103" loopEnabled="True" path="Samples/noteNumber_80.wav"/>
+			<sample rootNote="104" loNote="104" hiNote="104" loopEnabled="True" path="Samples/noteNumber_81.wav"/>
+			<sample rootNote="105" loNote="105" hiNote="105" loopEnabled="True" path="Samples/noteNumber_95.wav"/>
+			<sample rootNote="106" loNote="106" hiNote="106" loopEnabled="True" path="Samples/noteNumber_1.wav"/>
+			<sample rootNote="107" loNote="107" hiNote="107" loopEnabled="True" path="Samples/noteNumber_42.wav"/>
+			<sample rootNote="108" loNote="108" hiNote="108" loopEnabled="True" path="Samples/noteNumber_56.wav"/>
+			<sample rootNote="109" loNote="109" hiNote="109" loopEnabled="True" path="Samples/noteNumber_113.wav"/>
+			<sample rootNote="110" loNote="110" hiNote="110" loopEnabled="True" path="Samples/noteNumber_107.wav"/>
+			<sample rootNote="111" loNote="111" hiNote="111" loopEnabled="True" path="Samples/noteNumber_111.wav"/>
+			<sample rootNote="112" loNote="112" hiNote="112" loopEnabled="True" path="Samples/noteNumber_105.wav"/>
+			<sample rootNote="113" loNote="113" hiNote="113" loopEnabled="True" path="Samples/noteNumber_40.wav"/>
+			<sample rootNote="114" loNote="114" hiNote="114" loopEnabled="True" path="Samples/noteNumber_54.wav"/>
+			<sample rootNote="115" loNote="115" hiNote="115" loopEnabled="True" path="Samples/noteNumber_68.wav"/>
+			<sample rootNote="116" loNote="116" hiNote="116" loopEnabled="True" path="Samples/noteNumber_83.wav"/>
+			<sample rootNote="117" loNote="117" hiNote="117" loopEnabled="True" path="Samples/noteNumber_3.wav"/>
+			<sample rootNote="118" loNote="118" hiNote="118" loopEnabled="True" path="Samples/noteNumber_97.wav"/>
+			<sample rootNote="119" loNote="119" hiNote="119" loopEnabled="True" path="Samples/noteNumber_96.wav"/>
+			<sample rootNote="120" loNote="120" hiNote="120" loopEnabled="True" path="Samples/noteNumber_2.wav"/>
+			<sample rootNote="121" loNote="121" hiNote="121" loopEnabled="True" path="Samples/noteNumber_82.wav"/>
+			<sample rootNote="122" loNote="122" hiNote="122" loopEnabled="True" path="Samples/noteNumber_69.wav"/>
+			<sample rootNote="123" loNote="123" hiNote="123" loopEnabled="True" path="Samples/noteNumber_55.wav"/>
+			<sample rootNote="124" loNote="124" hiNote="124" loopEnabled="True" path="Samples/noteNumber_41.wav"/>
+			<sample rootNote="125" loNote="125" hiNote="125" loopEnabled="True" path="Samples/noteNumber_104.wav"/>
+			<sample rootNote="126" loNote="126" hiNote="126" loopEnabled="True" path="Samples/noteNumber_110.wav"/>
+		</group>
+	</groups>
+</DecentSampler>

@@ -4,5 +4,5 @@ test.png
 __pycache__
 neural_nets/audio_output/neural_net2_audio/*
 .gitignore
-neural_nets/decentsampler_instruments/*
+
 

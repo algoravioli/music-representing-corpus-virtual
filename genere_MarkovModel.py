@@ -31,7 +31,7 @@ canvas = noter.addInstrumentTextAtIndent(
 
 markov = markovmodels.MarkovModel()
 rhythms, pitch, abspitch, octaves = markov.learnFromMidi(
-    "neural_nets/data/2004/MIDI-Unprocessed_SMF_02_R1_2004_01-05_ORIG_MID--AUDIO_02_R1_2004_05_Track05_wav.midi"
+    "neural_nets/data/2013/ORIG-MIDI_01_7_6_13_Group__MID--AUDIO_01_R1_2013_wav--2.midi"
 )
 # markov.plotMatrices()  # uncomment this to see the matrices
 
