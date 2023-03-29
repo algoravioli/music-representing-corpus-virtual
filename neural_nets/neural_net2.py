@@ -15,8 +15,9 @@ from RTNeuralutils.modelutils import *
 
 # %%
 # Setup the Model
+
 BLOCK_SIZE = 10
-model = Creator().create_model_dense(2, 16, BLOCK_SIZE, "tanh")
+model = Creator().create_model_dense(2, 32, BLOCK_SIZE, "tanh")
 # %%
 # Path: ../saxophone_audiodata/multiphonics/ where each file is called multiphonics(N).wav where (N) starts with 01 and ends at 228
 
@@ -24,12 +25,15 @@ inputArray, outputArray, Fs = Ingester().ingest_audio_for_neural_net2(
     "../saxophone_audiodata/multiphonics/", block_size=BLOCK_SIZE
 )
 # %%
+early_stopping = Creator().createEarlyStopper()
+
 model.fit(
     inputArray,
     outputArray,
     epochs=200,
     batch_size=1000,
     verbose=1,
+    callbacks=[early_stopping],
 )
 
 # %%
@@ -70,13 +74,13 @@ DecentSamplerAudioExporter().export_audio_from_train_data(
     model,
     inputArray,
     block_size=BLOCK_SIZE,
-    num_samples=127,
+    num_samples=1,
     path_to_save="audio_output/neural_net2_audio_traindata",
 )
 
 # %%
-DecentSamplerAudioExporter().create_decent_sampler_xml(
-    "audio_output/neural_net2_audio",
+DecentSamplerAudioExporter().create_decent_sampler_xml_from_1_sample(
+    "audio_output/neural_net2_audio_traindata",
     path_to_save="decentsampler_instruments/CreatedInstrument TD [Decent Sampler]",
 )
 

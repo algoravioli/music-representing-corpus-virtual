@@ -77,3 +77,9 @@ class Creator:
         model.build()
         model.summary()
         return model
+
+    def createEarlyStopper(self):
+        self.callback = tf.keras.callbacks.EarlyStopping(
+            monitor="loss", min_delta=0.0001, patience=2, verbose=1, mode="auto"
+        )
+        return self.callback

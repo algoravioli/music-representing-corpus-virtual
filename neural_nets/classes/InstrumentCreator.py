@@ -17,7 +17,7 @@ class DecentSamplerAudioExporter:
         num_notes=1,
         Fs=44100,
         block_size=1000,
-        length_of_note=1,
+        length_of_note=0.5,
         path_to_save="audio_output/neural_net2_audio",
     ):
         num_samples = length_of_note * Fs
@@ -86,6 +86,8 @@ class DecentSamplerAudioExporter:
             outputArray = model.predict(
                 np.reshape(inputArray[i], (1, block_size)), verbose=0
             )
+            while len(outputArray) < 44100:
+                outputArray = np.append(outputArray, outputArray)
             # We will then write the file to the directory
             write(
                 f"{path_to_save}/noteNumber_{i}.wav",
@@ -201,6 +203,127 @@ class DecentSamplerAudioExporter:
                 + f'{i}" '
                 + f'loNote="{i}" '
                 + f'hiNote="{i}" '
+                + f'loopEnabled="True" '
+                # + f'loopStart="0" '
+                + f'path="'
+                + f"Samples/{listOfAudio[i]}"
+                + '"/>'
+                + "\n"
+            )
+        xmlFile += "\t\t" + "</group>" + "\n"
+        xmlFile += "\t" + "</groups>" + "\n"
+        xmlFile += "</DecentSampler>" + "\n"
+
+        # We will then write the xml file to the new directory
+        with open(
+            f"{path_to_save}/Created Instrument [Decent Sampler].dspreset", "w"
+        ) as f:
+            f.write(xmlFile)
+
+    def create_decent_sampler_xml_from_1_sample(
+        self,
+        path_to_audio,
+        path_to_save="decentsampler_instruments/CreatedInstrument [Decent Sampler]",
+    ):
+        # path_to_audio is the path to the directory where the audio files are stored
+        # in the case of neural_net2, the path_to_audio is "audio_output/neural_net2_audio"
+        # path_to_save is the path to the directory where the xml file and new audio files will be saved
+
+        # We will first create a new directory to store the newly created instrument files
+        # This will be stored under "decentsampler_instruments"
+
+        if not os.path.exists(path_to_save):
+            os.mkdir(path_to_save)
+
+        if not os.path.exists(f"{path_to_save}/Samples"):
+            os.mkdir(f"{path_to_save}/Samples")
+
+        # We will then copy the background image to the new directory
+        shutil.copyfile(
+            "../neural_nets/decentsampler_instruments/background_default.png",
+            f"{path_to_save}/Samples/background.png",
+        )
+        # We will then start with the xml file creation
+        listOfAudio = os.listdir(path_to_audio)
+        if ".DS_Store" in listOfAudio:
+            listOfAudio.remove(".DS_Store")
+
+        print("The audio files chosen are: ", listOfAudio)
+
+        # This is just boilerplate for the xml file
+        xmlFile = "<?xml version=" + '"1.0"' + " encoding=" + '"UTF-8"' + "?>" + "\n"
+        xmlFile += "<DecentSampler>" + "\n"
+        xmlFile += (
+            "\t"
+            + '<ui bgImage="Samples/background.png" width="812" height="375" layoutMode="relative" bgMode="top_left"> + "\n"'
+        )
+        xmlFile += "\t\t" + '<tab name="main">' + "\n"
+        # ATTACK
+        xmlFile += (
+            "\t\t\t"
+            + '<labeled-knob x="385" y="75" width="90" textSize="16" textColor="AA000000" trackForegroundColor="CC000000" trackBackgroundColor="66999999" label="Attack" type="float" minValue="0.01" maxValue="4.0" value="0.0">'
+            + "\n"
+        )
+        xmlFile += (
+            "\t\t\t\t"
+            + '<binding type="amp" level="instrument" position="0" parameter="ENV_ATTACK"/>'
+            + "\n"
+        )
+        xmlFile += "\t\t\t" + "</labeled-knob>" + "\n"
+        # DECAY
+        xmlFile += (
+            "\t\t\t"
+            + '<labeled-knob x="450" y="75" width="90" textSize="16" textColor="AA000000" trackForegroundColor="CC000000" trackBackgroundColor="66999999" label="Decay" type="float" minValue="0.0" maxValue="4.0" value="0.0">'
+            + "\n"
+        )
+        xmlFile += (
+            "\t\t\t\t"
+            + '<binding type="amp" level="instrument" position="0" parameter="ENV_DECAY"/>'
+            + "\n"
+        )
+        xmlFile += "\t\t\t" + "</labeled-knob>" + "\n"
+        # SUSTAIN
+        xmlFile += (
+            "\t\t\t"
+            + '<labeled-knob x="515" y="75" width="90" textSize="16" textColor="AA000000" trackForegroundColor="CC000000" trackBackgroundColor="66999999" label="Sustain" type="float" minValue="0.0" maxValue="1.0" value="1.0">'
+            + "\n"
+        )
+        xmlFile += (
+            "\t\t\t\t"
+            + '<binding type="amp" level="instrument" position="0" parameter="ENV_SUSTAIN"/>'
+            + "\n"
+        )
+        xmlFile += "\t\t\t" + "</labeled-knob>" + "\n"
+        # RELEASE
+        xmlFile += (
+            "\t\t\t"
+            + '<labeled-knob x="580" y="75" width="90" textSize="16" textColor="AA000000" trackForegroundColor="CC000000" trackBackgroundColor="66999999" label="Release" type="float" minValue="0.0" maxValue="20.0" value="0.0">'
+            + "\n"
+        )
+        xmlFile += (
+            "\t\t\t\t"
+            + '<binding type="amp" level="instrument" position="0" parameter="ENV_RELEASE"/>'
+            + "\n"
+        )
+        xmlFile += "\t\t\t" + "</labeled-knob>" + "\n"
+
+        xmlFile += "\t\t" + "</tab>" + "\n"
+        xmlFile += "\t" + "</ui>" + "\n"
+        xmlFile += (
+            "\t" + '<groups attack="0.3" decay="0.5" sustain="1.0" release="2">' + "\n"
+        )
+        xmlFile += "\t\t" + "<group>" + "\n"
+        for i in range(len(listOfAudio)):
+            # We will copy the audio files to the new directory
+            shutil.copy2(
+                f"{path_to_audio}/{listOfAudio[i]}", f"{path_to_save}/Samples/"
+            )
+            xmlFile += (
+                "\t\t\t"
+                + f'<sample rootNote="'
+                + f'60" '
+                + f'loNote="0" '
+                + f'hiNote="127" '
                 + f'loopEnabled="True" '
                 # + f'loopStart="0" '
                 + f'path="'
