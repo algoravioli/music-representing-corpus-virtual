@@ -3,13 +3,7 @@
 
 namespace waveform_gen
 {
-Generator::Generator()
-{
-    std::random_device rd;
-    auto gen = std::minstd_rand(rd());
-    std::uniform_real_distribution<float> distro(-0.5f, 0.5f);
-    urng = std::bind(distro, gen); // NOLINT
-}
+Generator::Generator() = default;
 
 void Generator::load_model (std::ifstream&& json_stream)
 {
@@ -23,7 +17,7 @@ void Generator::load_model (nlohmann::json&& model_json)
     model_input.resize ((size_t) model->getInSize(), 0.0f);
 }
 
-void Generator::generate_signal (std::span<float> data)
+void Generator::generate_signal (std::span<const float> input, std::span<float> data)
 {
     if (model == nullptr)
     {
@@ -31,11 +25,15 @@ void Generator::generate_signal (std::span<float> data)
         return;
     }
 
-    for (auto& sample : data)
+    for (size_t idx = 0; idx < data.size(); ++idx)
     {
-        for (float& input_channel : model_input)
-            input_channel = urng();
-        sample = model->forward (model_input.data());
+        model_input[0] = input[idx];
+
+        data[idx] = model->forward (model_input.data());
+
+        // shift input signal history
+        for (size_t hist_idx = model->getInSize() - 1; hist_idx > 0; --hist_idx)
+            model_input[hist_idx] = model_input[hist_idx - 1];
     }
 }
 }

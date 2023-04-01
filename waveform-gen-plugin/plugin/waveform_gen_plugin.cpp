@@ -14,7 +14,10 @@ void WaveformGenPlugin::processAudioBlock (juce::AudioBuffer<float>& buffer)
         return;
     }
 
-    generator.generate_signal (std::span { buffer.getWritePointer (0), (size_t) buffer.getNumSamples() });
+    const auto numSamples = buffer.getNumSamples();
+    const auto readSpan = std::span { buffer.getReadPointer (0), (size_t) numSamples };
+    const auto writeSpan = std::span { buffer.getWritePointer (0), (size_t) numSamples };
+    generator.generate_signal (readSpan, writeSpan);
 
     // split from mono!
     for (int ch = 1; ch < buffer.getNumChannels(); ++ch)

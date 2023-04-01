@@ -3,11 +3,26 @@
 #include <sndfile.hh>
 
 #include <filesystem>
+#include <random>
 namespace fs = std::filesystem;
 
 #include "../src/waveform_gen.h"
 
 constexpr double sample_rate = 48000.0;
+
+std::vector<float> generate_signal (size_t samples)
+{
+    std::random_device rd;
+    auto gen = std::minstd_rand(rd());
+    std::uniform_real_distribution<float> distro(-0.5f, 0.5f);
+
+    std::vector<float> signal;
+    signal.reserve (samples);
+    for (size_t i = 0; i < samples; ++i)
+        signal.push_back (distro (gen));
+
+    return signal;
+}
 
 void write_file (const fs::path& file_path, const std::vector<float>& data)
 {
@@ -53,7 +68,8 @@ int main (int, char* argv[])
     else
         data.resize (10000, 0.0f);
 
-    generator.generate_signal (data);
+    const auto input_signal = generate_signal (data.size());
+    generator.generate_signal (input_signal, data);
 
     write_file (output_file_path, data);
 
