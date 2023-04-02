@@ -28,6 +28,23 @@ class Ingester:
         self.midiObject = pretty_midi.PrettyMIDI(path)
         return self.midiObject
 
+    def ingest_midi_for_neural_net1_ROLLFUNCTION(self, inputArray, memory):
+        # this produces an input and output dataset
+        newInputArray = np.array([])
+        for i in range(memory):
+            if i == 0:
+                newInputArray = np.roll(inputArray, -i)
+            else:
+                newInputArray = np.column_stack(
+                    (newInputArray, np.roll(inputArray, -i))
+                )
+
+        outputArray = inputArray
+        # delete the last MEMORY rows
+        newInputArray = newInputArray[:-memory]
+        outputArray = outputArray[memory:]
+        return newInputArray, outputArray
+
     def ingest_audio_for_neural_net2(self, path, block_size=1000):
         # Path is a directory containing wav files
         trainingFiles = os.listdir(path)

@@ -48,16 +48,16 @@ model.fit(
     callbacks=[early_stopping],
     validation_split=0.3,
 )
-
+#%%
 # use save model from RTNeuralutils
-save_model(model, "saved_models_json/neural_net2.json")
+save_model(model, "saved_models_json/neural_net3.json")
 # %%
 # also use built in tensorflow save model
-model.save("saved_models_h5/neural_net2.h5")
+model.save("saved_models_h5/neural_net3.h5")
 
 # %%
 # If you have already trained your model, you can load the model weights and skip the training step
-model = tf.keras.models.load_model("saved_models_h5/neural_net2.h5")
+model = tf.keras.models.load_model("saved_models_h5/neural_net3.h5")
 print("Model Weights Loaded!")
 # %%
 # Plot the data to see the model performance
