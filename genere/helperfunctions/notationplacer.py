@@ -34,8 +34,24 @@ class notationPlacer:
         self.placedNotes = {}  # this will be in [system, x, y] format
         self.numberOfPlacedNotes = 0
 
-    def applyNoteheadAtCoord(self, canvas, x_left, y_top):
-        notehead = Image.open("genere/images/notehead_small.png")
+    def getPlacedNotes(self):
+        return self.placedNotes, self.numberOfPlacedNotes
+
+    def applyNoteheadAtCoord(self, canvas, x_left, y_top, notehead_type="normal"):
+        if notehead_type == "normal":
+            notehead = Image.open("genere/images/notehead_small.png")
+        if notehead_type == "square":
+            notehead = Image.open("genere/images/square_notehead.png")
+        if notehead_type == "diamond":
+            notehead = Image.open("genere/images/diamond_notehead.png")
+        if notehead_type == "triangle":
+            notehead = Image.open("genere/images/triangle_notehead.png")
+        if notehead_type == "diamond_empty":
+            notehead = Image.open("genere/images/diamond_empty_notehead.png")
+        if notehead_type == "triangle_empty":
+            notehead = Image.open("genere/images/triangle_empty_notehead.png")
+        if notehead_type == "smiley":
+            notehead = Image.open("genere/images/smiley_notehead.png")
         notehead = notehead.resize(
             (
                 int(10 + (0.5 * (GLOBAL_STAFF_INBETWEEN_SPACING_IN_PIXELS - 8))),
@@ -170,7 +186,13 @@ class notationPlacer:
         return canvas2
 
     def applyNoteheadAt(
-        self, canvas, which_system, percentage_horizontal, note, sharp_or_flat="sharp"
+        self,
+        canvas,
+        which_system,
+        percentage_horizontal,
+        note,
+        sharp_or_flat="sharp",
+        notehead_type="normal",
     ):
         if type(note) == int:
             note = self.midiNoteToMVCname(note, sharp_or_flat)
@@ -234,7 +256,9 @@ class notationPlacer:
                     # print((systemCoords[0][1] - (multiplier * ((i + 1) * 12))))
 
         # draw the note
-        canvas = self.applyNoteheadAtCoord(canvas, start_x, start_y)
+        canvas = self.applyNoteheadAtCoord(
+            canvas, start_x, start_y, notehead_type=notehead_type
+        )
         self.placedNotes[self.numberOfPlacedNotes] = [
             system_number,
             note,
@@ -313,6 +337,66 @@ class notationPlacer:
         ) + staffLineCoords[system][0][1]
 
         drawer.text((x_pos, y_pos), instrument, fill=(0, 0, 0), font=font)
+
+        return canvas
+
+    def drawLineFromNoteToNote(
+        self,
+        canvas,
+        note_number1,
+        note_number2,
+        dictionary_of_placed_notes,
+        line_width=3,
+        color=(0, 0, 0),
+    ):
+        if dictionary_of_placed_notes == None:
+            dictionary_of_placed_notes = self.placedNotes
+
+        offset1x = 20
+        offset1y = 20
+        offset2x = -20
+        offset2y = 20
+        note1 = dictionary_of_placed_notes[note_number1]
+        print(note1)
+        note2 = dictionary_of_placed_notes[note_number2]
+        print(note2)
+        drawer = ImageDraw.Draw(canvas)
+        drawer.line(
+            (
+                note1[2] + offset1x,
+                note1[3] + offset1y,
+                note2[2] + offset2x,
+                note2[3] + offset2y,
+            ),
+            fill=color,
+            width=line_width,
+        )
+        return canvas
+
+    def drawLineAcrossMultipleNotes(
+        self,
+        canvas,
+        arrayOfNoteNumbers,
+        dictionary_of_placed_notes,
+        line_width=3,
+        color=(0, 0, 0),
+    ):
+        if dictionary_of_placed_notes == None:
+            dictionary_of_placed_notes = self.placedNotes
+
+        xyArray = []
+        for i in range(len(arrayOfNoteNumbers)):
+            currentx = dictionary_of_placed_notes[arrayOfNoteNumbers[i]][2]
+            currenty = dictionary_of_placed_notes[arrayOfNoteNumbers[i]][3]
+            xyArray.append(currentx)
+            xyArray.append(currenty)
+
+        drawer = ImageDraw.Draw(canvas)
+        drawer.line(
+            xyArray,
+            fill=color,
+            width=line_width,
+        )
 
         return canvas
 

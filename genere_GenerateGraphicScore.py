@@ -8,14 +8,14 @@ from genere.helperfunctions import createcanvas
 from genere.helperfunctions import drawmanuscriptlines
 from genere.helperfunctions import notationplacer
 
-GLOBAL_SAVENAME = "graphic_score.png"  # change this to whatever you want
+GLOBAL_SAVENAME = "graphic_score--Generic.png"  # change this to whatever you want
 
 canvas, staffLineCoords = createcanvas.returnCanvas(
     "A4", "portrait", saveRawCanvas=False, indentation=True
 )
 noter = notationplacer.notationPlacer(canvas, staffLineCoords)
 canvas = noter.applyTrebleClef(canvas, 0, on_all=True)
-pprint(staffLineCoords)
+# pprint(staffLineCoords)
 
 # system_fonts = matplotlib.font_manager.findSystemFonts(fontpaths=None, fontext="ttf")
 # pprint(system_fonts)
@@ -45,7 +45,7 @@ arrayOfSystemNumbers = np.repeat(np.arange(0, 9), 5)
 # uncomment the following lines:
 # print(notes)
 # print(sharpOrFlat)
-print(horzPositions)
+# print(horzPositions)
 # print(arrayOfSystemNumbers)
 
 # Now that we have our arrays, we can loop through them and apply the notes to the canvas.
@@ -56,7 +56,47 @@ for i in range(len(notes)):
         horzPositions[arrayOfSystemNumbers[i], i % 5],
         int(notes[i]),
         sharp_or_flat=sharpOrFlat[i],
+        notehead_type=np.random.choice(
+            [
+                "normal",
+                "square",
+                "diamond",
+                "diamond_empty",
+                "triangle_empty",
+                "triangle",
+                "smiley",
+            ]
+        ),
     )
+
+dictionaryOfPlacedNotes, numberOfPlacedNotes = noter.getPlacedNotes()
+pprint(dictionaryOfPlacedNotes)
+# draw an arc from the first note to the next note
+for i in range(2):
+    randomNote1 = np.random.randint(0, numberOfPlacedNotes)
+    randomNote2 = np.random.randint(0, numberOfPlacedNotes)
+    canvas = noter.drawLineFromNoteToNote(
+        canvas,
+        randomNote1,
+        randomNote2,
+        dictionaryOfPlacedNotes,
+        color="red",
+        line_width=1,
+    )
+
+for i in range(5):
+    randomNumberOfNotes = np.random.randint(2, 7)
+    arrayOfNotes = []
+    for j in range(randomNumberOfNotes):
+        randomNote = np.random.randint(0, numberOfPlacedNotes)
+        arrayOfNotes.append(randomNote)
+    arrayOfNotes = np.sort(arrayOfNotes)
+    canvas = noter.drawLineAcrossMultipleNotes(
+        canvas, arrayOfNotes, dictionaryOfPlacedNotes, color="blue", line_width=1
+    )
+
 
 canvas.save(GLOBAL_SAVENAME)
 print(f"{GLOBAL_SAVENAME} saved to disk.")
+
+# %%
