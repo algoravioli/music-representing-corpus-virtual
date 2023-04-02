@@ -6,3 +6,4 @@ neural_nets/audio_output/neural_net2_audio/*
 .gitignore
 
 
+neural_nets/saved_models_h5/neural_net4.h5
