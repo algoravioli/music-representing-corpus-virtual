@@ -1,0 +1,35 @@
+#N canvas 1280 25 1280 1328 12;
+#X obj 200 353 vstplugin~;
+#X msg 159 204 open -e ValhallaSupermassive;
+#X obj 447 33 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X floatatom 431 208 5 0 0 0 - - - 0;
+#X msg 443 103 1 50;
+#X obj 462 183 line;
+#X obj 364 151 osc~ 2000;
+#X obj 386 214 *~;
+#X obj 386 268 *~ 0.75;
+#X obj 203 419 dac~;
+#X obj 511 106 del 50;
+#X msg 513 142 0 300;
+#X obj 425 554 print;
+#X msg 68 317 param_set 0 \$1;
+#X obj 38 250 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X connect 0 0 9 0;
+#X connect 0 1 9 1;
+#X connect 0 2 12 0;
+#X connect 1 0 0 0;
+#X connect 2 0 4 0;
+#X connect 2 0 10 0;
+#X connect 3 0 7 1;
+#X connect 4 0 5 0;
+#X connect 5 0 3 0;
+#X connect 6 0 7 0;
+#X connect 7 0 8 0;
+#X connect 8 0 0 1;
+#X connect 8 0 0 0;
+#X connect 10 0 11 0;
+#X connect 11 0 5 0;
+#X connect 13 0 0 0;
+#X connect 14 0 13 0;

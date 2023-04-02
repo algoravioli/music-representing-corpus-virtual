@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import os
 import pretty_midi
 import librosa
+from tqdm import tqdm
 
 
 class Ingester:
@@ -30,11 +31,11 @@ class Ingester:
     def ingest_audio_for_neural_net2(self, path, block_size=1000):
         # Path is a directory containing wav files
         trainingFiles = os.listdir(path)
+        # Remove .DS_Store from the list if it is there
         if ".DS_Store" in trainingFiles:
             trainingFiles.remove(".DS_Store")
 
         trainingFiles = [path + file for file in trainingFiles]
-        # Remove .DS_Store from the list if it is there
 
         inputArray = np.array([])
         outputArray = np.array([])
@@ -69,3 +70,87 @@ class Ingester:
         print(outputArray.shape)
 
         return inputArray, outputArray, self.sr
+
+    def ingest_audio_for_neural_net3(self, path_to_files, memory=8):
+        trainingFiles = os.listdir(path_to_files)
+        if ".DS_Store" in trainingFiles:
+            trainingFiles.remove(".DS_Store")
+        trainingFiles = [path_to_files + file for file in trainingFiles]
+        inputArray = np.array([])
+        outputArray = np.array([])
+        for i in tqdm(range(len(trainingFiles))):
+            # Load the audio file and append to inputArray as 1D array
+            y, Fs = librosa.load(trainingFiles[i])
+            # Convert to mono
+            y = librosa.to_mono(y)
+            outputArray = np.append(outputArray, y)
+
+        # Need to shift the inputArray by memory times
+        for i in range(memory):
+            shiftedInputArray = np.roll(outputArray, -i)
+            shiftedInputArray[-1] = 0
+            if i == 0:
+                inputArray = shiftedInputArray
+            else:
+                inputArray = np.vstack((inputArray, shiftedInputArray))
+
+        inputArray = inputArray.T
+
+        # delete last memory rows of inputArray and outputArray
+        inputArray = inputArray[:-memory]
+        outputArray = outputArray[memory:]
+
+        return inputArray, outputArray
+
+    def arbitrary_method_for_neural_net4(self, path_to_files):
+        trainingFiles = os.listdir(path_to_files)
+        if ".DS_Store" in trainingFiles:
+            trainingFiles.remove(".DS_Store")
+        trainingFiles = [path_to_files + file for file in trainingFiles]
+        outputLengthArray = np.array([])
+
+        for i in tqdm(range(len(trainingFiles))):
+            # Load the audio file
+            y, Fs = librosa.load(trainingFiles[i])
+            # Convert to mono
+            y = librosa.to_mono(y)
+            outputLengthArray = np.append(outputLengthArray, len(y))
+
+        return int(np.mean(outputLengthArray))
+
+    def ingest_audio_for_neural_net4(self, path_to_files, BLOCK_SIZE=1000):
+        trainingFiles = os.listdir(path_to_files)
+        if ".DS_Store" in trainingFiles:
+            trainingFiles.remove(".DS_Store")
+
+        trainingFiles = [path_to_files + file for file in trainingFiles]
+        inputArray = np.array([])
+        outputArray = np.array([])
+        for i in range(len(trainingFiles)):
+            print(f"File No. {i + 1} of {len(trainingFiles)}")
+            # Load the audio file
+            y, Fs = librosa.load(trainingFiles[i])
+            # Convert to mono
+            y = librosa.to_mono(y)
+            # Extract MFCC
+            mfcc = librosa.feature.mfcc(y=y, sr=Fs, n_mels=512, fmax=16000)
+            # sum the rows of mfcc
+            mfcc = np.sum(mfcc, axis=-1)
+            # reshape mfcc to be a 2D array of shape (1, n)
+            mfcc = mfcc.reshape(1, len(mfcc))
+            # Append to inputArray
+            if len(y) < BLOCK_SIZE:
+                y = np.pad(y, (0, BLOCK_SIZE - len(y)), "constant")
+
+            if i == 0:
+                inputArray = mfcc
+                outputArray = y[0:BLOCK_SIZE]
+            else:
+                inputArray = np.concatenate((inputArray, mfcc), axis=0)
+                # np.vstack outputArray
+                outputArray = np.vstack((outputArray, y[0:BLOCK_SIZE]))
+
+        print(inputArray.shape)
+        print(outputArray.shape)
+
+        return inputArray, outputArray

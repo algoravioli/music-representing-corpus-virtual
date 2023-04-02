@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DecentSampler>
+	<ui bgImage="Samples/background.png" width="812" height="375" layoutMode="relative" bgMode="top_left"> + "
+"		<tab name="main">
+			<labeled-knob x="385" y="75" width="90" textSize="16" textColor="AA000000" trackForegroundColor="CC000000" trackBackgroundColor="66999999" label="Attack" type="float" minValue="0.01" maxValue="4.0" value="0.0">
+				<binding type="amp" level="instrument" position="0" parameter="ENV_ATTACK"/>
+			</labeled-knob>
+			<labeled-knob x="450" y="75" width="90" textSize="16" textColor="AA000000" trackForegroundColor="CC000000" trackBackgroundColor="66999999" label="Decay" type="float" minValue="0.0" maxValue="4.0" value="0.0">
+				<binding type="amp" level="instrument" position="0" parameter="ENV_DECAY"/>
+			</labeled-knob>
+			<labeled-knob x="515" y="75" width="90" textSize="16" textColor="AA000000" trackForegroundColor="CC000000" trackBackgroundColor="66999999" label="Sustain" type="float" minValue="0.0" maxValue="1.0" value="1.0">
+				<binding type="amp" level="instrument" position="0" parameter="ENV_SUSTAIN"/>
+			</labeled-knob>
+			<labeled-knob x="580" y="75" width="90" textSize="16" textColor="AA000000" trackForegroundColor="CC000000" trackBackgroundColor="66999999" label="Release" type="float" minValue="0.0" maxValue="20.0" value="0.0">
+				<binding type="amp" level="instrument" position="0" parameter="ENV_RELEASE"/>
+			</labeled-knob>
+		</tab>
+	</ui>
+	<groups attack="0.3" decay="0.5" sustain="1.0" release="2">
+		<group>
+			<sample rootNote="60" loNote="0" hiNote="127" loopEnabled="True" path="Samples/noteNumber_0.wav"/>
+		</group>
+	</groups>
+</DecentSampler>

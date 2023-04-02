@@ -17,7 +17,7 @@ from RTNeuralutils.modelutils import *
 # Setup the Model
 
 BLOCK_SIZE = 10
-model = Creator().create_model_dense(2, 32, BLOCK_SIZE, "tanh")
+model = Creator().createDenseModelForNeuralNet2(2, 32, BLOCK_SIZE, "tanh")
 # %%
 # Path: ../saxophone_audiodata/multiphonics/ where each file is called multiphonics(N).wav where (N) starts with 01 and ends at 228
 

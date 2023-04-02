@@ -6,7 +6,7 @@ class Creator:
     def __init__(self):
         pass
 
-    def create_model_dense(
+    def createDenseModelForNeuralNet2(
         self, n_layers, layer_size, input_output_size, activation="tanh"
     ):
         # The number of layers and the size of each layer will be determined by the user
@@ -33,7 +33,7 @@ class Creator:
         model.summary()
         return model
 
-    def create_model_GRU(
+    def createGRUModelForNeuralNet2(
         self, n_layers, layer_size, input_output_size, activation="tanh"
     ):
         # This model uses an RNN
@@ -54,7 +54,7 @@ class Creator:
         model.summary()
         return model
 
-    def create_model_CNN(
+    def createCNNModelForNeuralNet2(
         self, n_layers, layer_size, input_output_size, activation="tanh"
     ):
         # This model uses a CNN
@@ -78,8 +78,59 @@ class Creator:
         model.summary()
         return model
 
+    #########################
+    #########################
+    #########################
+    #########################
+    #########################
+
+    def createModelForNeuralNet3(self, n_layers, n_inputs, activation="tanh"):
+        model = tf.keras.models.Sequential()
+        model.add(tf.keras.layers.InputLayer(input_shape=(n_inputs,)))
+        model.add(tf.keras.layers.Reshape((1, n_inputs)))
+        for _ in range(n_layers):
+            model.add(
+                tf.keras.layers.GRU(
+                    n_inputs, return_sequences=True, activation=activation
+                )
+            )
+        model.add(tf.keras.layers.Flatten())
+        model.add(tf.keras.layers.Dense(1, activation="tanh"))
+
+        model.compile(optimizer="adam", loss="mean_squared_error", metrics=["mse"])
+        model.build()
+        model.summary()
+        return model
+
+    #########################
+    #########################
+    #########################
+    #########################
+    #########################
+
+    def createDenseModelForNeuralNet4(
+        self, n_layers, layer_size, input_size, output_size
+    ):
+        model = tf.keras.models.Sequential()
+        model.add(tf.keras.layers.InputLayer(input_shape=(input_size,)))
+        model.add(tf.keras.layers.Reshape((1, input_size)))
+        for _ in range(n_layers):
+            model.add(tf.keras.layers.Dense(layer_size, activation="tanh"))
+        model.add(tf.keras.layers.Dense(output_size, activation="tanh"))
+
+        model.compile(optimizer="adam", loss="mean_squared_error", metrics=["mse"])
+        model.build()
+        model.summary()
+        return model
+
+    #########################
+    #########################
+    #########################
+    #########################
+    #########################
+
     def createEarlyStopper(self):
         self.callback = tf.keras.callbacks.EarlyStopping(
-            monitor="loss", min_delta=0.0001, patience=2, verbose=1, mode="auto"
+            monitor="loss", min_delta=0.0001, patience=5, verbose=1, mode="auto"
         )
         return self.callback
