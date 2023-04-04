@@ -88,7 +88,7 @@ outputArray = Generator().continuePieceUsingNeuralNet1(
 # %%
 plt.plot(outputArray[:, 1])
 # %%
-pathForMidi = "neural_nets/output_midi/NeuralNet1_output.mid"
+pathForMidi = "../neural_nets/output_midi/NeuralNet1_output.mid"
 Generator().saveArrayAsMidi(outputArray, pathForMidi)
 
 

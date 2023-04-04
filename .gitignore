@@ -8,3 +8,4 @@ neural_nets/audio_output/neural_net2_audio/*
 
 neural_nets/saved_models_h5/neural_net4.h5
 
+neural_nets/output_midi/NeuralNet1_output.mid
