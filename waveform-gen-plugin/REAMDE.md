@@ -4,11 +4,14 @@
 $ cmake -Bbuild -DCMAKE_BUILD_TYPE=Release
 ```
 
-## Building Plugin
+<!-- cmake -Bbuild-xcode -GXcode -D"CMAKE_OSX_ARCHITECTURES=arm64;x86_64" -->
 
+## Building Plugin
+## If you want VST3, change AU to VST3
 ```bash
-$ cmake --build build --config Release --target waveform_gen_plugin_VST3 --parallel
+$ cmake --build build --config Release --target waveform_gen_plugin_AU --parallel
 ```
+
 
 The plugin will be located in build/plugin/waveform_gen_plugin_artefacts.
 

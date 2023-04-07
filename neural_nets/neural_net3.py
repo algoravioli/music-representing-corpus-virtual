@@ -26,7 +26,7 @@ activation = activations_list[
 ]
 # We will call the number of inputs: MEMORY
 MEMORY = 8
-model = Creator().createModelForNeuralNet3(4, MEMORY, activation=activation)
+model = Creator().createModelForNeuralNet3(4, MEMORY, activation=activation, scaler=2)
 
 # %%
 # Path: ../saxophone_audiodata/ordinaire/
@@ -43,12 +43,12 @@ model.fit(
     inputArray,
     outputArray,
     epochs=200,
-    batch_size=5000,
+    batch_size=50000,
     verbose=1,
     callbacks=[early_stopping],
     validation_split=0.3,
 )
-#%%
+# %%
 # use save model from RTNeuralutils
 save_model(model, "saved_models_json/neural_net3.json")
 # %%

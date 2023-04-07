@@ -209,14 +209,14 @@ class Creator:
     #########################
     #########################
 
-    def createModelForNeuralNet3(self, n_layers, n_inputs, activation="tanh"):
+    def createModelForNeuralNet3(self, n_layers, n_inputs, activation="tanh", scaler=2):
         model = tf.keras.models.Sequential()
         model.add(tf.keras.layers.InputLayer(input_shape=(n_inputs,)))
         model.add(tf.keras.layers.Reshape((1, n_inputs)))
         for _ in range(n_layers):
             model.add(
                 tf.keras.layers.GRU(
-                    n_inputs, return_sequences=True, activation=activation
+                    n_inputs * scaler, return_sequences=True, activation=activation
                 )
             )
         model.add(tf.keras.layers.Flatten())
