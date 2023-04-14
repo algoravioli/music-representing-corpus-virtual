@@ -21,9 +21,7 @@ composers = get_list_of_composers(main_data)
 
 # %%
 # Load full dataset and filter data from a set of composers
-midi_data = get_data_for_composer(
-    main_data, ["George Frideric Handel", "Nikolai Medtner"]
-)
+midi_data = get_data_for_composer(main_data, ["Handel", "Medtner"])
 startTimes = midi_data[:, 0]
 endTimes = midi_data[:, 1]
 pitches = midi_data[:, 2]
@@ -49,7 +47,7 @@ durationsIn, durationsOut = Ingester().ingest_midi_for_neural_net1_ROLLFUNCTION(
 
 # %%
 # Construct our neural_net1 model
-model = Creator().createModelForNeuralNet1(MEMORY, params_multiplier=5)
+model = Creator().createModelForNeuralNet1(MEMORY, params_multiplier=10)
 
 # %%
 # The model.fit in this case might look abit scary but it's just a lot of parameters
@@ -70,7 +68,6 @@ model.fit(
     },
     epochs=50,
     batch_size=1000,
-    callbacks=[early_stopping],
 )
 # %%
 # We use built in tensorflow save model function as RTNeural is not necessary for this model

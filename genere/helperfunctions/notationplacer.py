@@ -304,6 +304,18 @@ class notationPlacer:
         drawer.text((x_pos, y_pos), title, fill=(0, 0, 0), font=font)
         return canvas
 
+    def addTextAt(
+        self, canvas, text, x, y, font="Geneva.ttf", fontsize=30, heightAdjust=10
+    ):
+        font = ImageFont.truetype(font, fontsize)
+
+        drawer = ImageDraw.Draw(canvas)
+        width, height = drawer.textsize(text, font=font)  # of the text
+        x_pos = x
+        y_pos = y
+        drawer.text((x_pos, y_pos), text, fill=(0, 0, 0), font=font)
+        return canvas
+
     def addComposer(
         self, canvas, composer, font="Geneva.ttf", fontsize=20, pageAlignValue=4.75
     ):
