@@ -1,4 +1,4 @@
-Neural Net 1: Realtime Generative Moddel (RGM) trained on the MAESTRO dataset.
+Neural Net 1: Realtime Generative Model (RGM) trained on the MAESTRO dataset.
 Available at the link:
 (https://storage.googleapis.com/magentadata/datasets/maestro/v3.0.0/maestro-v3.0.0.zip)
 Curtis Hawthorne, Andriy Stasyuk, Adam Roberts, Ian Simon, Cheng-Zhi Anna Huang,
