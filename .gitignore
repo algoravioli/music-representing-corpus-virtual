@@ -13,3 +13,4 @@ neural_nets/saved_models_h5/neural_net1.h5
 graphic_score--Generic.png
 .gitignore
 concert_files/*
+env/*
