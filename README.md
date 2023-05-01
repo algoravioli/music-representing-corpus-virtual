@@ -17,29 +17,45 @@ We present a number of use cases that is encompassed within the scope/remit of t
 - **Procedural Score Generation**
   - This is done through the `./genere/` part of the codebase.
 
+## Table of Contents
+* **[Starting from Absolute Zero](#starting-from-absolute-zero)**
+  * **[Mac OS](#mac-os)**
+  * **[Post VSCode Install](#post-vscode-install)**
+  * **[Verify Pyenv Install](#verify-pyenv-install)**
+  * **[After Installing Pyenv](#after-installing-pyenv)**
+  * **[Post Python Install](#post-python-install)**
+  * **[Time to Set Up VSCODE](#time-to-set-up-vscode)**
+* **[Dependencies](#dependencies)**
+* **[Building the Audio Plugin](#building-the-audio-plugin-to-run-json-neural-network-files)**
+* **[Using a Virtual Environment](#using-a-virtual-environment)**
+
 ## Starting from Absolute Zero
 ### Mac OS
 This project is made under the full understanding that people will not have had any programming experience whatsoever. This section of the `README.md` will serve as a guide for setting everything up. We recommend using [VSCode](https://code.visualstudio.com/) as the code executor. 
 ##### Post VSCode Install
 After installing VSCode, download [Homebrew](https://brew.sh/) in order to manage certain packages you will need to maintain some neatness in your computer. We recommend pyenv and graphviz.
 
-First, install Homebrew, open your terminal and type these commands without the starting $
-```bas
-$ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
-Next, install pyenv and graphviz (for intel macs, there seems to be problem which is easily fixed with installing xz)
+First, install Homebrew, open the Terminal application (under Applications >> Terminal) and type these commands:
 ```bash
-$ brew install pyenv
-$ brew install graphviz
-$ brew install xz (if needed)
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
-After this, we will need to type a few simple commands into the terminal. Type this command to see which shell you are running. Usually it will be bash or zsh.
+After installing Homebrew, you will be able to install packages from your Terminal application, for example:
+```bash
+brew install <package-name>
+```
+Next, install pyenv and graphviz (for intel Macs, there seems to be a problem which can be easily fixed by installing xz)
+```bash
+brew install pyenv
+brew install graphviz
+brew install xz (if needed)
+```
+After this, you will need to type a few simple commands into the terminal. Type this command to see which shell you are running. Usually it will be bash or zsh.
 ```bash 
 echo $SHELL
 ```
 Follow the steps below for the necessary shell (bash or zsh).
 ##### bash (taken from the pyenv github README.md)
-- For **bash**:
+For **bash**, type these commands:
 ```bash
 echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
 echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
@@ -64,7 +80,7 @@ echo 'eval "$(pyenv init -)"' >> ~/.bash_profile
 
 Restart your terminal after typing these commands.
 ##### zsh (taken from the pyenv github README.md)
-For **zsh**:
+For **zsh**, type these commands:
 ```zsh
 echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.zshrc
 echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.zshrc
@@ -74,7 +90,7 @@ Restart your terminal after typing these commands.
 ##### Verify pyenv install
 Type this line to check if you have done everything right:
 ```bash
-$ pyenv --version
+pyenv --version
 ```
 If correct, it should output something like:
 ```bash
@@ -85,7 +101,7 @@ Your numbers may vary a little but in general it should not say pyenv can not be
 ##### After installing pyenv
 Next, we will want to set up the proper python versions for your system. Python versions can be installed with pyenv using this command. This command installs python version 3.10.10, which is the most stable version for this library. However, we have tested it on 3.10.8 and it works as well.
 ```bash
-$ pyenv install 3.10.10 
+pyenv install 3.10.10 
 ```
 If you run into an error such as this:
 ```bash
@@ -95,16 +111,16 @@ See all available versions with `pyenv install --list`.
 ```
 Try to install versions by reducing the last number (first attempt from 3.10.10 to 3.10.9) until it allows you to install:
 ```bash
-$ pyenv install 3.10.9
+pyenv install 3.10.9
 ...
 
-$ pyenv install 3.10.8
+pyenv install 3.10.8
 ... (you get the idea)
 ```
 ##### Post-python install
 Change our global version of python to the one we installed (the following command assumes 3.10.10, but yours might differ, it could be 3.10.8):
 ```bash
-$ pyenv global 3.10.10
+pyenv global 3.10.10
 ```
 Restart your terminal application.
 After restarting, you should be able to type in `python -V` and see that your current version is 3.10.10.
@@ -119,26 +135,26 @@ After restarting, you should be able to type in `python -V` and see that your cu
 ## Dependencies
 Because this project is not currently in production yet (version no. < 0.0.0), the some dependencies will need to be installed separately from the `requirements.txt` file. First we install `requirements.txt`:
 ```bash
-$ pip install --upgrade pip
-$ pip install -r requirements.txt
+pip install --upgrade pip
+pip install -r requirements.txt
 ```
 After this, depending on which OS:
 ##### Windows/Intel Macs/Linux
 ```bash
-$ pip install tensorflow
+pip install tensorflow
 ```
 ##### M1 Macs
 ```bash
-$ pip install tensorflow-macos tensorflow-metal
+pip install tensorflow-macos tensorflow-metal
 ```
 
 ## Building the Audio Plugin to run `.json` neural network files
 ### Configuring
 ```bash
-$ cd waveform-gen-plugin
+cd waveform-gen-plugin
 ```
 ```bash
-$ cmake -Bbuild -DCMAKE_BUILD_TYPE=Release
+cmake -Bbuild -DCMAKE_BUILD_TYPE=Release
 ```
 
 <!-- cmake -Bbuild-xcode -GXcode -D"CMAKE_OSX_ARCHITECTURES=arm64;x86_64" -->
@@ -147,11 +163,11 @@ $ cmake -Bbuild -DCMAKE_BUILD_TYPE=Release
 <!-- ### If you want VST3, change AU to VST3 -->
 ##### AU
 ```bash
-$ cmake --build build --config Release --target waveform_gen_plugin_AU --parallel
+cmake --build build --config Release --target waveform_gen_plugin_AU --parallel
 ```
 ##### VST3
 ```bash
-$ cmake --build build --config Release --target waveform_gen_plugin_VST3 --parallel
+cmake --build build --config Release --target waveform_gen_plugin_VST3 --parallel
 ```
 
 The plugin will be located in build/plugin/waveform_gen_plugin_artefacts.
@@ -159,27 +175,27 @@ The plugin will be located in build/plugin/waveform_gen_plugin_artefacts.
 ### Building CLI Tool
 
 ```bash
-$ cmake --build build --config Release --target waveform_gen_cli --parallel
+cmake --build build --config Release --target waveform_gen_cli --parallel
 ```
 
 Then you can run the CLI tool like:
 ```bash
-$ ./build/cli/Debug/waveform_gen_cli --model-file="/Users/jatin/ChowDSP/Research/RTNeural/RTNeural/models/dense.json" --out-file=test.wav --samples=100000
+./build/cli/Debug/waveform_gen_cli --model-file="/Users/jatin/ChowDSP/Research/RTNeural/RTNeural/models/dense.json" --out-file=test.wav --samples=100000
 ```
 
 ## Using a virtual environment
 You may choose to run the library from a virtual environment. Should you wish to do so, this is an example using virtualenv `pip install virtualenv`.
 ```bash
-$ virtualenv --python=python3.10.10 env
+virtualenv --python=python3.10.10 env
 ```
 ```bash
-$ pip install --upgrade pip
+pip install --upgrade pip
 ```
 ```bash
-$ source env/bin/activate
+source env/bin/activate
 ```
 ```bash
-$ pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 After doing what you need to do:
 ```bash
