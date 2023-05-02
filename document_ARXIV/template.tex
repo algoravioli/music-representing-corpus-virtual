@@ -6,7 +6,8 @@
 \usepackage[T1]{fontenc}    % use 8-bit T1 fonts
 \usepackage{hyperref}       % hyperlinks
 \usepackage{url}            % simple URL typesetting
-\usepackage{booktabs}       % professional-quality tables
+\usepackage{booktabs}
+\usepackage{amsmath}       % professional-quality tables
 \usepackage{amsfonts}       % blackboard math symbols
 \usepackage{nicefrac}       % compact symbols for 1/2, etc.
 \usepackage{microtype}      % microtypography
@@ -15,8 +16,16 @@
 \usepackage{graphicx}
 \usepackage{natbib}
 \usepackage{doi}
+\usepackage{quiver}
+\usepackage{adjustbox}
+\usepackage{ffcode}
 
-\title{Music Virtual Corpus: An Open Source Software Suite for Music Generation in Contemporary Classical Music Styles}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+\tikzcdset{scale cd/.style={every label/.append style={scale=#1},
+    cells={nodes={scale=#1}}}}
+
+\title{Music Representing Corpus Virtual: An Open Sourced Library for Explorative Music Generation, Sound Design, and Instrument Creation with Artificial Intelligence and Machine Learning}
 
 % Here you can change the date presented in the paper title
 %\date{September 9, 1985}
@@ -25,10 +34,9 @@
 
 \author{\\
 	{Christopher Johann Clarke} \\
-	Department of Computer Science\\
-	Cranberry-Lemon University\\
-	Pittsburgh, PA 15213 \\
-	\texttt{hippo@cs.cranberry-lemon.edu} \\
+	In Fulfillment of The National Arts Council Creation Grant\\
+	National Arts Council, Singapore\\
+	\texttt{chris.johann.clarke@gmail.com} \\
 }
 	%% examples of more authors
 	% \And
@@ -57,138 +65,280 @@
 % Uncomment to override  the `A preprint' in the header
 %\renewcommand{\headeright}{Technical Report}
 %\renewcommand{\undertitle}{Technical Report}
-\renewcommand{\shorttitle}{\textit{arXiv} Template}
+\renewcommand{\shorttitle}{MRCV}
 
 %%% Add PDF metadata to help others organize their library
 %%% Once the PDF is generated, you can check the metadata with
 %%% $ pdfinfo template.pdf
 \hypersetup{
-pdftitle={A template for the arxiv style},
-pdfsubject={q-bio.NC, q-bio.QM},
-pdfauthor={David S.~Hippocampus, Elias D.~Striatum},
-pdfkeywords={First keyword, Second keyword, More},
+pdftitle={Music Virtual Corpus: An Open Source Software Suite for Explorative Music Generation, Sound Design, and Instrument Creation},
+pdfsubject={},
+pdfauthor={Christopher Johann Clarke},
+pdfkeywords={Artificial Intelligence, Machine Learning, Education, Music Generation, Sound Design, Instrument Creation, Software, Audio DSP},
 }
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-	\lipsum[1]
+	Music Representing Corpus Virtual (MRCV) is an open source software suite designed to explore the capabilities of Artificial Intelligence (AI) and Machine Learning (ML) in Music Generation, Sound Design, and Virtual Instrument Creation (MGSDIC). The software is accessible to users of varying levels of experience, with an emphasis on providing an explorative approach to MGSDIC. The main aim of MRCV is to facilitate creativity, allowing users to customize input datasets for training the neural networks, and offering a range of options for each neural network (thoroughly documented in the Github Wiki). The software suite is designed to be accessible to musicians, audio professionals, sound designers, and composers, regardless of their prior experience in AI or ML. The documentation is prepared in such a way as to abstract technical details, thereby making it easy to understand. The software is open source, meaning users can contribute to its development, and the community can collectively benefit from the insights and experience of other users.
 \end{abstract}
 
 
 % keywords can be removed
-\keywords{First keyword \and Second keyword \and More}
+\keywords{Artificial Intelligence \and Machine Learning\and Education\and Music Generation\and Sound Design\and Instrument Creation\and Software\and Audio DSP}
 
 
 \section{Introduction}
-\lipsum[2]
-\lipsum[3]
+\label{sec:intro}
+Artificial Intelligence (AI) and Machine Learning (ML) have been areas of active research for several decades, with roots that can be traced back to the 1940s and 1950s \citep{wilson2011affect}. The idea of creating machines capable of emulating human thought and behavior has been a topic of interest since the early days of computing, and the development of AI and ML has been driven by various factors, including improvements in hardware, the availability of larger datasets, and advancements in algorithms and techniques \citep{lu2018brain}.
 
+In recent years, ML has experienced a significant surge of interest due to advancements in deep learning, reinforcement learning, and other techniques. These breakthroughs have led to significant progress in areas such as image and speech recognition, natural language processing, and predictive modeling, among others \citep{howard2019artificial}. The adoption of ML has rapidly spread across numerous industries, including music, where ML is now being used for music generation \citep{kaliakatsos2020artificial}, sound design \citep{miranda1995artificial}, and virtual instrument creation \citep{tahirouglu2020terity}.
 
-\section{Headings: first level}
-\label{sec:headings}
+Algorithmic music composition has a long history, with early experiments dating back to the 1950s and 1960s. The rise of digital audio workstations (DAWs) in the 1980s and 1990s \citep{jackson2015history} facilitated the creation of more sophisticated music software, which led to the development of algorithmic music composition techniques. These techniques involve the use of computer algorithms to generate musical material, either independently or in collaboration with human composers \citep{alpern1995techniques}.
 
-\lipsum[4] See Section \ref{sec:headings}.
+With the rise of ML techniques in music, the field has experienced an upsurge in interest in using these techniques for music generation, sound design, and virtual instrument creation. Researchers and musicians are exploring the use of ML in music in innovative ways, ranging from the application of supervised and unsupervised learning algorithms to the development of deep neural networks for music analysis \citep{miranda2013readings} and synthesis \citep{roads1985research}. These new techniques have opened up exciting possibilities for musical creativity and exploration, offering new tools for musicians and composers to experiment with and push the boundaries of what is possible in music.
 
-\subsection{Headings: second level}
-\lipsum[5]
+This paper will take a descriptive view on the software library developed, explaining each component part of the library. This serves as a means for further development. As a companion aid to the documentation on the Github, this will highlight the formal structure of the library, and the reasoning behind the design choices made. The paper will also discuss the future development of the library, and the potential for further research in the field of AI and ML in music. The potential implications of this software are outside of the scope of the discussion herein.
+
+\section{Descriptive View of the Software Library}
+\label{sec:descriptive}
+\subsection{Preface}
+\label{subsec:preface}
+In order to provide formal description of the various neural networks, this subsection is dedicated to expressing some of the language and notation used in the sections ahead. Firstly, a dense neural network can be described thusly:
 \begin{equation}
-	\xi _{ij}(t)=P(x_{t}=i,x_{t+1}=j|y,v,w;\theta)= {\frac {\alpha _{i}(t)a^{w_t}_{ij}\beta _{j}(t+1)b^{v_{t+1}}_{j}(y_{t+1})}{\sum _{i=1}^{N} \sum _{j=1}^{N} \alpha _{i}(t)a^{w_t}_{ij}\beta _{j}(t+1)b^{v_{t+1}}_{j}(y_{t+1})}}
+	\label{eq:dense}
+	\hat{y} = \mathbb{M}(x) = \sigma(Wx+b)\circ \dots \circ \sigma(Wx_0 + b)
 \end{equation}
+Where $\mathbb{M}$ represents the model, which is composed ($\circ$ denotes function composition) of multiple layers. Each layer $\sigma(Wx+b)$ has an activation function $\sigma$, a weight value $W$, an input $x$, and a bias value $b$. $x_0$ is defined as the first input to the model, and $\hat{y}$ is the output of the model.
 
-\subsubsection{Headings: third level}
-\lipsum[6]
+In most cases, the input $x$ comes from feature extraction. In the case of audio, an example of this is an FFT of the signal at a given time frame. This can be represented as such, borrowing from equation 1:
+\begin{equation}
+	\label{eq:feature}
+	\hat{y} = \mathbb{M}(\mathcal{F}(x)) = \sigma(W(x)+b)\circ \dots \circ \sigma(W\mathcal{F}(x_0) + b)
+\end{equation}
+Where $\mathcal{F}$ is the feature extraction method used. From Equation \ref{eq:feature}, this feature extraction method is only applicable to the first input of the network.
 
-\paragraph{Paragraph}
-\lipsum[7]
+In order to efficiently notate a model's parameters, such as layer width (number of neurons per layer) and layer count (number of layers), the following shorthand notation is used:
+\begin{equation}
+	\mathbb{M} = \Bigg[\sum^{(L,\mathbf{p})}_0\Bigg]
+\end{equation}
+Where $L$ is the layer count, and $\mathbf{p}$ is the layer width. For example, a model with 3 layers, with 2 neurons per layer, can be notated as such:
+\begin{equation}
+	\mathbb{M}_{\textit{layers}=3,\textit{width}=2}= \Bigg[\sum^{(3,2)}_0\Bigg]
+\end{equation}
+This notation is used throughout the paper to describe the various models and submodels used.
+\subsection{Motivations in Explorative Searching}
+Generally, this software library makes use of the trained latent representations of the dataset as a sort of pseudo-random generator. However, this pseudo-randomness maintains some sort of congruence to the training dataset. A latent representation in a neural network refers to the hidden layers that capture a compressed, abstract representation of the input data. The goal of this layer is to extract meaningful and relevant features from the input to the layer and transform these input data into a differently compact or expressive compressed form.
 
+During the training process, the neural network learns to map the input data onto this latent representation by adjusting the weights of the connections between the layers. This process is known as feature extraction and is critical to the success of many machine learning tasks, such as image classification, natural language processing, and music generation.
 
+The term "latent" refers to the fact that the representation is not directly observable in the input data but is inferred from the patterns and relationships within the data. This compressed representation can be thought of as a high-dimensional abstraction of the input data that captures the essential characteristics of the data, while discarding irrelevant details.
 
-\section{Examples of citations, figures, tables, references}
-\label{sec:others}
+Once the neural network has learned a good latent representation of the input data, it can be used for a variety of tasks, such as generating new data that is similar to the input data or classifying the input data into different categories. Overall, latent representations are a powerful tool for neural networks and are a key factor in their ability to learn complex relationships within data.
 
-\subsection{Citations}
-Citations use \verb+natbib+. The documentation may be found at
-\begin{center}
-	\url{http://mirrors.ctan.org/macros/latex/contrib/natbib/natnotes.pdf}
-\end{center}
+However, when used in this case, the latent representations serve as a means of mixing multiple characteristics into one. For example, the latent representation of a saxophone note can be mixed with the latent representation of a flute note, resulting in a hybrid sound. However, this resulting hybrid sound might bear almost no similarity to the input sound. In essence, this is a form of ``using neural networks the wrong way'' or neural network bending (derivate of circuit bending). This is the basis of the software library, and the following sections will explain the various components of the library.
 
-Here is an example usage of the two main commands (\verb+citet+ and \verb+citep+): Some people thought a thing \citep{kour2014real, hadash2018estimate} but other people thought something else \citep{kour2014fast}. Many people have speculated that if we knew exactly why \citet{kour2014fast} thought this\dots
-
-\subsection{Figures}
-\lipsum[10]
-See Figure \ref{fig:fig1}. Here is how you add footnotes. \footnote{Sample of the first footnote.}
-\lipsum[11]
-
-\begin{figure}
+The table below shows the various sections of the library, this section will explain each section in detail. The sections are as follows:
+\begin{table*}[h]
 	\centering
-	\fbox{\rule[-.5cm]{4cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
-	\caption{Sample figure caption.}
-	\label{fig:fig1}
-\end{figure}
-
-\subsection{Tables}
-See awesome Table~\ref{tab:table}.
-
-The documentation for \verb+booktabs+ (`Publication quality tables in LaTeX') is available from:
-\begin{center}
-	\url{https://www.ctan.org/pkg/booktabs}
-\end{center}
-
-
-\begin{table}
-	\caption{Sample table title}
-	\centering
-	\begin{tabular}{lll}
+	\caption{Music Representing Corpus Virtual (MRCV)}
+	\label{tab:sections}
+	\begin{tabular}{ll}
 		\toprule
-		\multicolumn{2}{c}{Part}                   \\
-		\cmidrule(r){1-2}
-		Name     & Description     & Size ($\mu$m) \\
+		Section          & Description                                                             \\
 		\midrule
-		Dendrite & Input terminal  & $\sim$100     \\
-		Axon     & Output terminal & $\sim$10      \\
-		Soma     & Cell body       & up to $10^6$  \\
+		Neural Network 1 & Music Generation                                                        \\
+		Neural Network 2 & Sampler Instrument Procedural Generation (Sound Design)                 \\
+		Neural Network 3 & Realtime Audio-to-Audio Inferencing (VST/AU plugin)                     \\
+		Neural Network 4 & Neural Wavetable Generation through Mel-frequency Cepstrum Coefficients \\
+		Genere           & Procedural Score Generation                                             \\
+		Audio Dataset 1  & Saxophone Ordinario Dataset                                             \\
+		Audio Dataset 2  & Saxophone Multiphonic Dataset                                           \\
+		Audio Dataset 3  & Piano Dataset                                                           \\
+		MIDI Dataset     & MAESTRO Dataset                                                         \\
 		\bottomrule
 	\end{tabular}
-	\label{tab:table}
-\end{table}
+\end{table*}
 
-\subsection{Lists}
-\begin{itemize}
-	\item Lorem ipsum dolor sit amet
-	\item consectetur adipiscing elit.
-	\item Aliquam dignissim blandit est, in dictum tortor gravida eget. In ac rutrum magna.
-\end{itemize}
+\subsection{Neural Network 1: Music Generation}
+\label{sec:nn1}
+\subsubsection{Introduction}
+The first neural network offered is a Multiple-In-Multiple-Out (MIMO) Neural Network model \citep{ayomoh2012neural} or MixMo Neural Network model \citep{rame2021mixmo}. Since the input and output of this neural network is MIDI, the neural network will have to be able to ingest the correct format for each column of data in the MIDI dataset. The chosen format of data is a list containing:
+\begin{description}
+	\item[Onset Time] Initial time value when note is played
+	\item[Duration] Time value when note is released (offset time - onset time)
+	\item[Pitch] MIDI pitch value
+	\item[Velocity] MIDI velocity value corresponding to loudness (and sometimes timbre)
+\end{description}
+This neural network only makes use of this four input variables. The given task, and by extension the loss function of the network, is to predict the next note in the series of notes. Functionally, we can express that as such:
+\begin{align*}
+	\label{eq:nn1}
+	\mathcal{L} = f(\textit{Note}_{t+1} - \textit{Note}_{t})
+	\quad \mathcal{L}_\textit{components}
+	\begin{cases}
+		\textit{Onset Time} \\
+		\textit{Duration}   \\
+		\textit{Pitch}      \\
+		\textit{Velocity}
+	\end{cases}
+	\numberthis
+\end{align*}
+Since there are 4 separate components within the loss function, it will be hard to linearly combine these various components of loss to derive a single loss. Instead, the neural network can be made to predict 4 separate values. This is done by having 4 separate output layers, each with their own network and loss function. The loss function for each output layer is the mean squared error (MSE) loss function. The MSE loss function is defined as:
+\begin{equation}
+	\label{eq:mse}
+	\mathcal{L}_\textit{MSE} = \frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)^2
+\end{equation}
+\subsubsection{Model}
+Conceivably, this leaves us with the motivation to construct a network that makes use of multiple inputs and produces multiple outputs. This is further informed by the fact that compositionally speaking. The various components of a note are not independent of each other. There might be interactions between each component of the note, for example, the onset time of a note might be dependent on the pitch of the previous note. With this understanding, a neural network can be constructed as such:
+\begin{align*}
+	\label{eq:nn1_expand}
+	\textit{sub}\mathbb{M}_{\textit{pitch,duration}} = \Bigg[\sum^{(L,\mathbf{p})}_0\Bigg](x_{\textit{pitch}}\cup x_{\textit{duration}})       \quad\quad\quad\quad
+	\textit{sub}\mathbb{M}_{\textit{pitch,onset}} = \Bigg[\sum^{(L,\mathbf{p})}_0\Bigg](x_{\textit{pitch}}\cup x_{\textit{onset}})              \\
+	\textit{sub}\mathbb{M}_{\textit{pitch,velocity}} = \Bigg[\sum^{(L,\mathbf{p})}_0\Bigg](x_{\textit{pitch}}\cup x_{\textit{velocity}})     \quad
+	\textit{sub}\mathbb{M}_{\textit{duration,velocity}} = \Bigg[\sum^{(L,\mathbf{p})}_0\Bigg](x_{\textit{duration}} \cup x_{\textit{velocity}}) \\
+	\textit{sub}\mathbb{M}_{\textit{onset,velocity}} = \Bigg[\sum^{(L,\mathbf{p})}_0\Bigg](x_{\textit{onset}}\cup x_{\textit{velocity}})     \quad\quad
+	\textit{sub}\mathbb{M}_{\textit{duration,onset}} = \Bigg[\sum^{(L,\mathbf{p})}_0\Bigg](x_{\textit{duration}}\cup x_{\textit{onset}})        \\
+	\forall \hat{y} = \{\hat{y}_{\textit{pitch}}, \hat{y}_{\textit{onset}}, \hat{y}_{\textit{duration}},\hat{y}_{\textit{velocity}}\} = \Bigg[\sum^{(L,\mathbf{p})}_0\Bigg]_i\bigcup_{i=1}^{n_{\textit{sub}\mathbb{M}}}\genfrac(){0pt}{0}{n_{\textit{sub}\mathbb{M}}}{3_{\forall x}}\textit{sub}\mathbb{M}_i\quad\quad\quad\quad\quad
+	\numberthis
+\end{align*}
+
+\vspace{8mm}
+For further clarification, the notation used in Equation \ref{eq:nn1_expand} is described in the figure below:
+\begin{figure*}[h]
+	\centering
+	\[\begin{tikzcd} [scale cd=0.8]
+			&& Pitch & Onset & Duration & {\textit{Velocity}} \\
+			& \bigcup\bullet & \bigcup\bullet & \bigcup\bullet & \bigcup\bullet & \bigcup\bullet & \bigcup\bullet \\
+			{\textit{sub}\mathbb{M}_i} & {\Bigg[\sum^{(L,\mathbf{p})}_0\Bigg]} & {\Bigg[\sum^{(L,\mathbf{p})}_0\Bigg]} & {\Bigg[\sum^{(L,\mathbf{p})}_0\Bigg]} & {\Bigg[\sum^{(L,\mathbf{p})}_0\Bigg]} & {\Bigg[\sum^{(L,\mathbf{p})}_0\Bigg]} & {\Bigg[\sum^{(L,\mathbf{p})}_0\Bigg]} \\
+			\\
+			{\genfrac(){0pt}{0}{n_{\textit{sub}\mathbb{M}}}{3_{\forall x}}} \\
+			&& {\Bigg[\sum^{(L,\mathbf{p})}_0\Bigg]} & {\Bigg[\sum^{(L,\mathbf{p})}_0\Bigg]} & {\Bigg[\sum^{(L,\mathbf{p})}_0\Bigg]} & {\Bigg[\sum^{(L,\mathbf{p})}_0\Bigg]} \\
+			&& {\hat{y_{\textit{pitch}}}} & {\hat{y_{\textit{onset}}}} & {\hat{y_{\textit{duration}}}} & {\hat{y_{\textit{velocity}}}}
+			\arrow[from=1-3, to=2-2]
+			\arrow[from=1-3, to=2-3]
+			\arrow[from=1-3, to=2-4]
+			\arrow[from=1-4, to=2-2]
+			\arrow[from=1-5, to=2-3]
+			\arrow[from=1-6, to=2-4]
+			\arrow[from=1-4, to=2-5]
+			\arrow[from=1-5, to=2-5]
+			\arrow[from=1-4, to=2-6]
+			\arrow[from=1-6, to=2-6]
+			\arrow[from=1-5, to=2-7]
+			\arrow[from=1-6, to=2-7]
+			\arrow[from=2-3, to=3-3]
+			\arrow[from=2-4, to=3-4]
+			\arrow[from=2-5, to=3-5]
+			\arrow[from=2-6, to=3-6]
+			\arrow[from=2-7, to=3-7]
+			\arrow[from=2-2, to=3-2]
+			\arrow[from=3-2, to=6-3]
+			\arrow[from=3-3, to=6-3]
+			\arrow[from=3-4, to=6-3]
+			\arrow[from=3-5, to=6-4]
+			\arrow[from=3-2, to=6-4]
+			\arrow[from=3-6, to=6-4]
+			\arrow[from=3-3, to=6-5]
+			\arrow[from=3-5, to=6-5]
+			\arrow[from=3-7, to=6-5]
+			\arrow[from=3-4, to=6-6]
+			\arrow[from=3-6, to=6-6]
+			\arrow[from=3-7, to=6-6]
+			\arrow[from=6-3, to=7-3]
+			\arrow[from=6-4, to=7-4]
+			\arrow[from=6-5, to=7-5]
+			\arrow[from=6-6, to=7-6]
+		\end{tikzcd}\]
+	\caption{The structure of the Neural Network in Equation \ref{eq:nn1_expand}. With each input parameter connected to different submodels within the neural network. These submodels are then combined differently to produce the output parameters.}
+	\label{fig:nn1_expand}
+\end{figure*}
+
+Clarifying the notation used in Equation \ref{eq:nn1_expand}: The $\cup$ operator describes any differentiable operator, which is inclusive of but not limited to the cardinal operators of $+,-,\times,\div$. Specifically, the operator used in the deployed version of the system is the \textit{concat} operator:
+\begin{align*}
+	a = [1,2,3]                          \\
+	b = [4,5,6]                          \\
+	\textit{concat}(a,b) = [1,2,3,4,5,6] \\
+	\numberthis
+\end{align*}
+\subsubsection{Dataset}
+This model is deployed with the MAESTRO (MIDI and Audio Edited for Synchronous TRacks and Organization) dataset \citep{hawthorne2018enabling}, which is a collection of about 200 hours of virtuosic piano performances captured with fine alignment (~3 ms) between note labels and audio waveforms. The recorded performances are MIDI recordings of virtuoso pianists performing of Yamaha Disklaviers. The repertoire is mostly classical (common practice period), including mostly composers from the 17th to early 20th century.
+
+In the code, a lookup function has been made to construct the dataset. The lookup function takes in an array of strings and parses these strings to return a MIDI dataset with the corresponding composers. An example of this is as such.
+
+\begin{ffcode}
+	midi_data = get_data_for_composer(main_data, ["Handel", "Medtner"])
+	# returns a dataset that has only the MIDI files of Handel and Medtner
+	# in each column the dataset contains:
+	startTimes = midi_data[:, 0]
+	endTimes = midi_data[:, 1]
+	pitches = midi_data[:, 2]
+	velocities = midi_data[:, 3]
+	durations = midi_data[:, 4]
+\end{ffcode}
+
+\subsubsection{Output of the Model}
+Here are some examples of the output of the model, represented as images of piano roll. The x-axis represents time and the y-axis represent pitch height (in midi note numbers).
+
+(example image here)
+
+\subsection{Neural Network 2: Sound Design}
+\subsubsection{Introduction}
+Continuing with the theme of misusing neural networks, Neural Network 2 is designed to be a sound design tool. The model takes in a sample of an audio at time $t-1$ and is asked to predict the sample at time $t$. An aspect that will be elaborated on further is the potential of mixing datasets. The model is deployed with the Saxophone Multiphonics Dataset as its default training data.
+\subsubsection{Model}
+The model is a simple dense-layered neural network with a dropout layer after every layer. The dropout layer will be notated as $d$ in the model. Formally, we can refer to the mixture of Datasets $\mathcal{D}$ as:
+\begin{equation}
+	\mathcal{D} = \bigcup \  ( \{ D_1, D_2, \dots, D_n \} )
+\end{equation}
+since the model is exposed to a mixture of datasets, the latent representations learnt by the model adhere to these datasets. The model will try its best to generate outputs that adhere to the latent patterns of these datasets.
+\begin{align*}
+	\hat{y} = \Bigg[\sum^{(L,\mathbf{p})}_0(d)\Bigg](x_{\mathbb{B} \dots \mathbb{B}*})
+	\numberthis
+\end{align*}
+The model has certain network architecture parameters that are exposed to the user. In this case, layer count $L$ and layer width $p$ are exposed to let the user design the model architecture. $\mathbb{B} \dots \mathbb{B}*$ refers to the block size of the input and output. More specifically, if the block size were 4, then the input would be $x_{t-3},x_{t-2}, x_{t-1}, x$, and the next input would be $x_{t+1}, x_{t+2}, x_{t+3}, x_{t+4}$. The output of the model should be trying to return predicted $x_{t+1}, x_{t+2}, x_{t+3}, x_{t+4}$, and $x_{t+5}, x_{t+6}, x_{t+7}, x_{t+8}$ respectively. For further clarification, this is the model architecture in the case of $L=2$ and $p=4$, with 1 input and 1 output from the dataset:
+\begin{align*}
+	\hat{y} = \Bigg[\sum^{(2,4)}_0(d)\Bigg](x_{t-3},x_{t-2}, x_{t-1}, x) \\
+	\hat{y} \approx x_{t+1}, x_{t+2}, x_{t+3}, x_{t+4}
+	\numberthis
+\end{align*}
+Graphically, this can be represented as:
+
+\vspace{8mm}
+For further clarification, the notation used in \autoref{eq:nn1_expand} is described in the figure below:
+\begin{figure*}[h]
+	\centering
+	\[\begin{tikzcd} [scale cd=1]
+			{  \{ x_{t-3},x_{t-2}, x_{t-1}, x \}} \\
+			{Dense_1(4)} \\
+			{Dropout(0.5)} \\
+			{Dense_2(4)} \\
+			{Dropout(0.5)} \\
+			{\hat{y} \approx x_{t+1}, x_{t+2}, x_{t+3}, x_{t+4}}
+			\arrow[from=1-1, to=2-1]
+			\arrow[from=2-1, to=3-1]
+			\arrow[from=3-1, to=4-1]
+			\arrow[from=4-1, to=5-1]
+			\arrow[from=5-1, to=6-1]
+		\end{tikzcd}\]
+	\caption{The structure of the Neural Network in \autoref{eq:nn1_expand}. With each input parameter connected to different submodels within the neural network. These submodels are then combined differently to produce the output parameters.}
+	\label{fig:nn2_expand}
+\end{figure*}
+
+The model will then be asked to predict $M$ number of blocks. Realistically, each block can be imagined as an audio file containing 44100 samples. Thus the final outputs of the model will resemble a batch of files of length (block size) with $M$ number of files.
+\begin{equation}
+	\{ \hat{Y} \} = \{ \hat{y}_1, \hat{y}_2, \dots, \hat{y}_M \}
+\end{equation}
+These files are then passed to a script that will procedurally generate a Decent Sampler Instrument \citep{Shopdece2:online}, which is a sampler instrument that can be used in a Digital Audio Workstation (DAW). The script will procedurally generate a sampler instrument that will play the files in the order of the output. The sampler instrument will be generated with the following user accessible parameters: Attack, Decay, Sustain, and Release.
+\subsubsection{Dataset}
+The Saxophone Multiphonic Dataset (SMD) is a dataset of saxophone multiphonics. This dataset features a recording of all the multiphonics listed in the saxophone multiphonics book by \citet{kientzy1982sons}. SMD features PCM recordings at a sampling rate of 44.1 kHz. In total, there are 228 audio files.
+\subsubsection{Output of the Model}
+
 
 
 \bibliographystyle{unsrtnat}
-\bibliography{references}  %%% Uncomment this line and comment out the ``thebibliography'' section below to use the external .bib file (using bibtex) .
+\bibliography{references}
 
 
-%%% Uncomment this section and comment out the \bibliography{references} line above to use inline references.
-% \begin{thebibliography}{1}
-
-% 	\bibitem{kour2014real}
-% 	George Kour and Raid Saabne.
-% 	\newblock Real-time segmentation of on-line handwritten arabic script.
-% 	\newblock In {\em Frontiers in Handwriting Recognition (ICFHR), 2014 14th
-% 			International Conference on}, pages 417--422. IEEE, 2014.
-
-% 	\bibitem{kour2014fast}
-% 	George Kour and Raid Saabne.
-% 	\newblock Fast classification of handwritten on-line arabic characters.
-% 	\newblock In {\em Soft Computing and Pattern Recognition (SoCPaR), 2014 6th
-% 			International Conference of}, pages 312--318. IEEE, 2014.
-
-% 	\bibitem{hadash2018estimate}
-% 	Guy Hadash, Einat Kermany, Boaz Carmeli, Ofer Lavi, George Kour, and Alon
-% 	Jacovi.
-% 	\newblock Estimate and replace: A novel approach to integrating deep neural
-% 	networks with existing applications.
-% 	\newblock {\em arXiv preprint arXiv:1804.09028}, 2018.
-
-% \end{thebibliography}
 
 
 \end{document}

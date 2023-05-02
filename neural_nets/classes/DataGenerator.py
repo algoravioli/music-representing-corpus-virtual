@@ -136,20 +136,33 @@ class Generator:
         #
         return finalOutputArray
 
-    def saveArrayAsMidi(self, outputArray, path_to_save):
+    def saveArrayAsMidi(self, outputArray, path_to_save, lengthDesiredInSeconds=60):
+        # sort outputArray by first column
+        outputArray = outputArray[outputArray[:, 0].argsort()]
         # Write array to PrettyMidi and then save as midi file
         # Create a PrettyMIDI object
         midi_data = PrettyMIDI()
         midi_data.instruments.append(Instrument(0))
         for i in range(len(outputArray)):
-            midi_data.instruments[0].notes.append(
-                Note(
-                    velocity=int(outputArray[i, 2]),
-                    pitch=int(outputArray[i, 1]),
-                    start=outputArray[i, 0],
-                    end=outputArray[i, 0] + outputArray[i, 3],
+            if outputArray[i, 1] == 0:
+                continue
+            else:
+                midi_data.instruments[0].notes.append(
+                    Note(
+                        velocity=int(
+                            60 if outputArray[i, 2] < 30 else outputArray[i, 2]
+                        ),
+                        pitch=int(outputArray[i, 1]) + (2 * 12)
+                        if outputArray[i, 1] < 20
+                        else int(outputArray[i, 1]),
+                        start=(outputArray[i, 0] / np.max(outputArray[:, 0]))
+                        * lengthDesiredInSeconds,
+                        end=np.random.rand() * 10
+                        if (outputArray[i, 0] + outputArray[i, 3]) > 3
+                        else (outputArray[i, 0] + outputArray[i, 3]),
+                    )
                 )
-            )
+                # print(outputArray[i, 0] / 4)
         midi_data.write(path_to_save)
 
 

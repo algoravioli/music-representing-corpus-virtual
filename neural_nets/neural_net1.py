@@ -21,7 +21,7 @@ composers = get_list_of_composers(main_data)
 
 # %%
 # Load full dataset and filter data from a set of composers
-midi_data = get_data_for_composer(main_data, ["Handel", "Medtner"])
+midi_data = get_data_for_composer(main_data, ["Medtner"])
 startTimes = midi_data[:, 0]
 endTimes = midi_data[:, 1]
 pitches = midi_data[:, 2]
@@ -47,31 +47,31 @@ durationsIn, durationsOut = Ingester().ingest_midi_for_neural_net1_ROLLFUNCTION(
 
 # %%
 # Construct our neural_net1 model
-model = Creator().createModelForNeuralNet1(MEMORY, params_multiplier=10)
+# model = Creator().createModelForNeuralNet1(MEMORY, params_multiplier=10)
 
 # %%
 # The model.fit in this case might look abit scary but it's just a lot of parameters
 # The important thing is that we are feeding the model the input and output data
-early_stopping = Creator().createEarlyStopper()
-model.fit(
-    {
-        "startTimes": startTimesIn,
-        "pitches": pitchesIn,
-        "velocities": velocitiesIn,
-        "durations": durationsIn,
-    },
-    {
-        "outputStartTimes": startTimesOut,
-        "outputPitches": pitchesOut,
-        "outputVelocities": velocitiesOut,
-        "outputDurations": durationsOut,
-    },
-    epochs=50,
-    batch_size=1000,
-)
+# early_stopping = Creator().createEarlyStopper()
+# model.fit(
+#     {
+#         "startTimes": startTimesIn,
+#         "pitches": pitchesIn,
+#         "velocities": velocitiesIn,
+#         "durations": durationsIn,
+#     },
+#     {
+#         "outputStartTimes": startTimesOut,
+#         "outputPitches": pitchesOut,
+#         "outputVelocities": velocitiesOut,
+#         "outputDurations": durationsOut,
+#     },
+#     epochs=50,
+#     batch_size=1000,
+# )
 # %%
 # We use built in tensorflow save model function as RTNeural is not necessary for this model
-model.save("saved_models_h5/neural_net1.h5")
+# model.save("saved_models_h5/neural_net1.h5")
 # %%
 # If you have already trained your model, you can load the model weights and skip the training step
 model = tf.keras.models.load_model("saved_models_h5/neural_net1.h5")
