@@ -19,6 +19,8 @@ We present a number of use cases that is encompassed within the scope/remit of t
 
 
 Feel free to read the [paper](https://tinyurl.com/3adsxybz) for further formal clarification on any of the topics within. 
+
+Also feel free to watch the workshop/mini-showcase at on [Youtube](https://www.youtube.com/watch?v=VjuqjSp21Nw)
 ## Table of Contents
 * **[Starting from Absolute Zero](#starting-from-absolute-zero)**
   * **[Mac OS](#mac-os)**
