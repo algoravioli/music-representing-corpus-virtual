@@ -192,7 +192,6 @@ Since there are 4 separate components within the loss function, it will be hard 
 \subsubsection{Model}
 Conceivably, this leaves us with the motivation to construct a network that makes use of multiple inputs and produces multiple outputs. This is further informed by the fact that compositionally speaking. The various components of a note are not independent of each other. There might be interactions between each component of the note, for example, the onset time of a note might be dependent on the pitch of the previous note. With this understanding, a neural network can be constructed as such:
 \begin{align*}
-	\label{eq:nn1_expand}
 	\textit{sub}\mathbb{M}_{\textit{pitch,duration}} = \Bigg[\sum^{(L,\mathbf{p})}_0\Bigg](x_{\textit{pitch}}\cup x_{\textit{duration}})       \quad\quad\quad\quad
 	\textit{sub}\mathbb{M}_{\textit{pitch,onset}} = \Bigg[\sum^{(L,\mathbf{p})}_0\Bigg](x_{\textit{pitch}}\cup x_{\textit{onset}})              \\
 	\textit{sub}\mathbb{M}_{\textit{pitch,velocity}} = \Bigg[\sum^{(L,\mathbf{p})}_0\Bigg](x_{\textit{pitch}}\cup x_{\textit{velocity}})     \quad
@@ -201,6 +200,7 @@ Conceivably, this leaves us with the motivation to construct a network that make
 	\textit{sub}\mathbb{M}_{\textit{duration,onset}} = \Bigg[\sum^{(L,\mathbf{p})}_0\Bigg](x_{\textit{duration}}\cup x_{\textit{onset}})        \\
 	\forall \hat{y} = \{\hat{y}_{\textit{pitch}}, \hat{y}_{\textit{onset}}, \hat{y}_{\textit{duration}},\hat{y}_{\textit{velocity}}\} = \Bigg[\sum^{(L,\mathbf{p})}_0\Bigg]_i\bigcup_{i=1}^{n_{\textit{sub}\mathbb{M}}}\genfrac(){0pt}{0}{n_{\textit{sub}\mathbb{M}}}{3_{\forall x}}\textit{sub}\mathbb{M}_i\quad\quad\quad\quad\quad
 	\numberthis
+	\label{eq:nn1_expand}
 \end{align*}
 
 \vspace{8mm}
@@ -278,9 +278,14 @@ In the code, a lookup function has been made to construct the dataset. The looku
 \end{ffcode}
 
 \subsubsection{Output of the Model}
-Here are some examples of the output of the model, represented as images of piano roll. The x-axis represents time and the y-axis represent pitch height (in midi note numbers).
+Here is one example of the output of the model, represented as images of piano roll. The x-axis represents time and the y-axis represent pitch height (in midi note numbers). This model was trained on a dataset that comprised of MIDI recordings of Handel and Medtner.
 
-(example image here)
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\columnwidth]{images/outputplot_nn1.png}
+	\caption{Output of the model. The x-axis represents time and the y-axis represents pitch height (in midi note numbers).}
+	\label{fig:outputplot_nn1}
+\end{figure}
 
 \subsection{Neural Network 2: Sound Design}
 \subsubsection{Introduction}
@@ -304,7 +309,6 @@ The model has certain network architecture parameters that are exposed to the us
 Graphically, this can be represented as:
 
 \vspace{8mm}
-For further clarification, the notation used in \autoref{eq:nn1_expand} is described in the figure below:
 \begin{figure*}[h]
 	\centering
 	\[\begin{tikzcd} [scale cd=1]
@@ -320,7 +324,7 @@ For further clarification, the notation used in \autoref{eq:nn1_expand} is descr
 			\arrow[from=4-1, to=5-1]
 			\arrow[from=5-1, to=6-1]
 		\end{tikzcd}\]
-	\caption{The structure of the Neural Network in \autoref{eq:nn1_expand}. With each input parameter connected to different submodels within the neural network. These submodels are then combined differently to produce the output parameters.}
+	\caption{The structure of the Neural Network 2.}
 	\label{fig:nn2_expand}
 \end{figure*}
 
@@ -331,13 +335,246 @@ The model will then be asked to predict $M$ number of blocks. Realistically, eac
 These files are then passed to a script that will procedurally generate a Decent Sampler Instrument \citep{Shopdece2:online}, which is a sampler instrument that can be used in a Digital Audio Workstation (DAW). The script will procedurally generate a sampler instrument that will play the files in the order of the output. The sampler instrument will be generated with the following user accessible parameters: Attack, Decay, Sustain, and Release.
 \subsubsection{Dataset}
 The Saxophone Multiphonic Dataset (SMD) is a dataset of saxophone multiphonics. This dataset features a recording of all the multiphonics listed in the saxophone multiphonics book by \citet{kientzy1982sons}. SMD features PCM recordings at a sampling rate of 44.1 kHz. In total, there are 228 audio files.
-\subsubsection{Output of the Model}
+\subsubsection{Exploratory Sound Design: Output of the Model}
+To highlight the aspect of exploratory sound design, one of the outputs of the model generated when trained on the SMD dataset resembled an electronic hi-hat from a drum machine. This provides insight into the potential of using neural networks as a sound design tool. The output of the model is shown in \autoref{fig:outputplot_nn2}.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\columnwidth]{images/outputplot_nn2.png}
+	\caption{Output of the model. The x-axis represents time and the y-axis represents pitch height (in midi note numbers).}
+	\label{fig:outputplot_nn2}
+\end{figure}
+
+\subsubsection{Model Exposed Parameters: Code Example}
+This section demonstrates the ease of use of the code when generating a model for this process. The user is able to select layer count $L$, layer width $p$, and block size $\mathbb{B} \dots \mathbb{B}*$.
+\begin{ffcode}
+	BLOCK_SIZE = 10
+	model = Creator().createDenseModelForNeuralNet2(2, 32, BLOCK_SIZE, "tanh")
+\end{ffcode}
+
+This code will generate a model with 2 layers, 32 neurons per layer, and a block size of 10.
+\subsection{Neural Network 3: Audio Plugin Creation}
+\subsubsection{Overview}
+There has been numerous neural audio plugins developed by research teams working on various tasks, such as Virtual Analog Modelling, and Neural Methods for Digital Signal Processing, and Neural Audio Synthesis. Neural audio plugins are audio effects plugins that are based on machine learning models, particularly neural networks, for processing audio signals. These plugins can be used to create new sound effects or to modify existing audio in various ways. One common application of neural audio plugins is in Virtual Analog Modelling (VAM) of audio hardware. VAM involves creating a digital model of an analog audio device, such as a vintage synthesizer, to reproduce its sound characteristics digitally. Neural audio plugins have shown promise in improving the accuracy and realism of VAM by modeling the complex nonlinearities and dynamics of analog circuits more accurately than traditional DSP methods.
+
+Another area where neural audio plugins have been applied is in the development of new audio effects, such as distortion, filtering, and time stretching. Neural networks can learn complex mappings between input and output audio signals, which can be used to create novel audio effects that are difficult or impossible to achieve using traditional DSP techniques.
+
+In recent years however, generating high-quality audio waveforms still remains a difficult task, and existing models either require significant computational power, low sampling rates, are difficult to control, or have limited signal generation capabilities. Examples such as Realtime Audio Variational autoEncoder (RAVE) \citep{caillon2021rave} offer both fast and high-quality audio waveform synthesis. The model uses a two-stage training procedure, with representation learning and adversarial fine-tuning, and allows direct control between reconstruction fidelity and representation compactness. Additionally, the model can generate 48kHz audio signals while running 20 times faster than real-time on a standard laptop CPU. The authors evaluate the model's synthesis quality using both quantitative and qualitative subjective experiments and demonstrate its superiority compared to existing models.
+
+This sort of complexity, however useful, is outside of the remit of what MRCV is offering. Instead, MRCV aims to put forth an extremely simple pipeline for new users to train their models and generate new sounds in realtime. The model offered here can be thought of as an audio-to-audio model, wherein, a sample (up to 8 samples of memory) is offered to the model to predict the next time step. This is a very simple model that can be trained on a laptop and used in realtime. The model is also very easy to use, with only a few parameters that can be tweaked to generate new sounds. The model is also very fast, and can generate high sample rate audio in realtime on a standard laptop CPU.
+
+\subsubsection{Model}
+The model offered here is a Gated Recurrent Unit (GRU) based model where the user can decide on the number of GRUs and their activation function. There is also a scaling parameter that allows the user to increase the parameters of the model.
+
+GRUs are a type of Recurrent Neural Network (RNN) that is widely used in sequential data processing tasks, such as language modeling, speech recognition, and time series prediction. Unlike traditional RNNs, which suffer from the vanishing gradient problem \citep{hochreiter1998vanishing} that hinders their ability to capture long-term dependencies in data, GRUs are designed to mitigate this issue.
+
+At the core of a GRU is a gating mechanism that selectively updates and outputs information at each time step. The gating mechanism consists of two gates: an update gate and a reset gate. The update gate controls how much of the previous hidden state should be preserved and how much of the new input should be incorporated into the new hidden state. The reset gate determines how much of the previous hidden state should be forgotten and how much of the new input should be used to reset the hidden state.\citep{chung2014empirical} The update and reset gates are implemented using sigmoid and element-wise multiplication operations, which are differentiable and allow for end-to-end training of the GRU using backpropagation. The output of a GRU at each time step is a combination of the current hidden state and the input, which are both passed through a non-linear activation function.
+
+Compared to other types of RNNs, GRUs have a simpler architecture that requires fewer parameters to train, making them faster and more memory-efficient. This makes them well-suited for real-time applications where low latency is critical, such as audio processing.
+
+Formally we can describe the model as such, with $\mathcal{D}$ being the dataset, $\mathbb{N} \dots \mathbb{N}*$ being memory (how far the model can see into the past), $L$ being the number of layers, $p$ being the number of neurons per layer:
+\begin{align*}
+	x_i \in \mathcal{D} = x_{t-\mathbb{N}*} \dots x_{t}                                    \\
+	\textit{if} \ \mathbb{N} \dots \mathbb{N} * = 3 \quad, \quad x_i = x_{t-3} \dots x_{t} \\
+	\hat{y} = \Bigg[\sum^{(L,\mathbf{p})}_0\Bigg]_{\textit{GRU}}(x_{i})
+\end{align*}
+
+\subsubsection{Dataset}
+The default dataset for Neural Network 3 is the Saxophone Ordinario Dataset (SOD). This dataset is consists of recordings of saxophones totaling in 90 mins of audio. Silence was removed from the dataset. The dataset has a total of 163 audio files. With the longest being approx. 3 mins in length (held note).
 
 
+
+\subsubsection{Example Output: Distortion}
+The output of the result of training is a distortion effect that also contains slight reverb. For more clarification, the sound files will be present on the Github Wiki. Below shows two plots that demonstrate the distortion (shown by the presence of more harmonics) and the reverb (shown by the presence of a tail or smearing of the sound). This is shown in \autoref{fig:neuralnet31} and \autoref{fig:neuralnet32}.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.5\columnwidth]{images/nn3_bypass.png}
+
+	\caption{Distortion effect bypassed}
+	\label{fig:neuralnet31}
+\end{figure}
+
+\begin{figure}
+	\centering
+
+	\includegraphics[width=0.5\columnwidth]{images/nn3_effected.png}
+
+	\caption{Distortion effect not bypassed, there is not only features of distortion above approx. 4096 Hz, but also a tail that is present. In addition to this, there is also more low frequencies around approx. < 64 Hz.}
+	\label{fig:neuralnet32}
+\end{figure}
+
+\newpage
+\subsubsection{Code Example}
+This section demonstrates using the default code to generate a plugin for this process. The user is able to select layer count $L$, memory (which in this case would also be the number of inputs to the model), and activation function type:
+\begin{ffcode}
+	activations_list = ["tanh", "relu", "sigmoid", "linear"]
+	activation = activations_list[0]
+	# change this from 0 - 3 to change the activation function
+	MEMORY = 8
+	model = Creator().createModelForNeuralNet3(4, MEMORY, activation=activation, scaler=2)
+\end{ffcode}
+This block of code creates Neural Network 3 with 4 layers of GRUs, 8 memory inputs, and a tanh activation function. The scaler is set to 2, which means that the model will have 2 times the number of parameters as the default model. This is useful for increasing the complexity of the model, and thus the complexity of the sounds it can generate.
+
+\subsection{Neural Network 4: Instrument Creation (Wavetable Synthesis)}
+\subsubsection{Introduction to Wavetable Synthesis}
+Wavetable synthesis is a technique used in digital audio synthesis to generate complex waveforms by playing back stored samples of single-cycle waveforms. The stored samples are known as wavetables. It has been a popular and powerful method in the field of music synthesis since its inception in the 1980s. Wavetable synthesis is based on the principle of oscillators, which produce periodic signals at specific frequencies. In wavetable synthesis, these oscillators are replaced by waveforms that are stored in a table, which can be played back at different frequencies to produce different pitches. \citep{smith1991viewpoints}
+
+The basic concept behind wavetable synthesis is to use a set of single-cycle waveforms, each representing a particular harmonic content, to create a more complex waveform that can be used to produce a musical sound. Wavetable synthesis has been used in a wide range of musical applications, including the creation of realistic acoustic instruments and the synthesis of electronic sounds. The technique has also been used in the creation of virtual analog synthesizers, which attempt to emulate the sound of traditional analog synthesizers using digital techniques.
+
+In this work, MRCV provides a method that we are going to called Neural-generated Wavetable Synthesis. The basic concept is that the model is given a dataset of audio data, and the model is expected to produce a wavetable (user-defined size) that produces a similar matching frequency response. This is done by using a loss function that calculates the difference between the frequency response of the wavetable and the frequency response of the audio data. The model is then trained to minimize this loss function.
+
+\subsubsection{Model: Caveat}
+At the time of writing, this paper, this model is not stable and is prone to having error values that tend to infinity. However, this section will still explain the main theory behind the model. Until the bugs are fixed, we will deploy a simple feed-forward Dense network that is able to generate a wavetable based on an input of Mel-spectrograms. The currently deployed model is as such:
+
+\begin{figure*}[h]
+	\centering
+	\[\begin{tikzcd} [scale cd=1]
+			{Audio Data} \\
+			{STFT/MFCC} & {outputsize=\{ m \times n \}} \\
+			Reshape & {desiredsize = \{ 1 \times mn \}} \\
+			Dense \\
+			\vdots \\
+			Dense \\
+			GeneratedWavetable
+			\arrow[from=1-1, to=2-1]
+			\arrow[from=2-1, to=3-1]
+			\arrow[from=3-1, to=4-1]
+			\arrow[from=6-1, to=7-1]
+			\arrow[dashed, no head, from=2-1, to=2-2]
+			\arrow[dashed, no head, from=3-1, to=3-2]
+		\end{tikzcd}\]
+	\caption{The structure of the deployed Neural Network 4.}
+	\label{fig:nn4_pre}
+\end{figure*}
+
+Ultimately, the model should be structurally more similar to this:
+\begin{equation}
+	\hat{y} = \Bigg[\sum^{(L,\mathbf{p})}_0\Bigg](x_{i})
+\end{equation}
+Where $x_i$ is an audio file. And in the loss function:
+\begin{equation}
+	\mathcal{L} = \textit{MFCC/STFT}(\hat{y})- \textit{MFCC/STFT}(x_i)
+\end{equation}
+It is most likely that the length of vector $\hat{y}$ $\neq$ the length of $x_i$. As $\hat{y}$ is usually around 1024 samples (as it is meant to be a wavetable, 1 single periodic oscillation of a waveform), and $x_i$ is usually more than that.
+
+\subsubsection{Dataset}
+The default dataset deployed with this model is the Piano Dataset, which is a collection of recordings of extended piano techniques \citet{pace1996lachenmann}, and ordinario piano playing. It contains 875 PCM audio files recorded at 44.1 kHz sampling rate. The dataset was cleaned up so that it does not contain any silences.
+
+\subsubsection{Example Output}
+This section will show the output of the deployed model. The model is trained on the Piano Dataset, and the output is a wavetable of size 1024. The output will then be used to procedurally generate a software synthesiser using Decent Sampler \citep{Shopdece2:online}. The output is as such:
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\columnwidth]{images/nn4.png}
+	\caption{The result of this Neural Generated Wavetable Synthesis technique.}
+\end{figure}
+
+\subsubsection{Code Example}
+The code for this neural network is similar to the preceeding examples. Users are able to define layer count $L$, layer size $p$, and block size $b$ for the model. The block size of the model determines how many samples the resulting wavetable should be:
+
+\begin{ffcode}
+	model = Creator().createDenseModelForNeuralNet4(n_layers, layer_size, input_size, BLOCK_SIZE)
+\end{ffcode}
+
+\subsection{Genere}
+Genere is a procedural midpoint between using art-centred visual editing programs (such as Adobe Illustrator/Photoshop/Indesign) and conventional notation softwares such as Sibelius/Finale/Dorico. Genere is designed to be similar to Lilypond \cite{nienhuys2003lilypond}, in that it is a code-centric environment for music notation. It differs in that the features that it provides are geared towards graphic score generation. Genere is designed to be a tool for composers to quickly generate graphic scores, and to be able to quickly edit them. Genere is also designed to be able to generate graphic scores that are not possible to be generated by hand, such as scores with thousands of notes, or scores with complex shapes. An example of this is to have each odd numbered page have larger margin sizes. While that may be a questionably hard task to do by hand or by conventional methods, it is a trivial task for Genere.
+
+Here are two scores generated by Genere, and the code used to generate them:
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\columnwidth]{images/graphic_score--Generic.png}
+	\caption{A showcase of some currently available features in Genere. The ability to change noteheads, draw lines, etc.}
+\end{figure}
+\newpage
+The code used for this is as such:
+\begin{ffcode}
+	GLOBAL_SAVENAME = "generic.png"
+	canvas, staffLineCoords = createcanvas.returnCanvas(
+	"A4", "portrait", saveRawCanvas=False, indentation=True
+	)
+	noter = notationplacer.notationPlacer(canvas, staffLineCoords)
+	canvas = noter.applyTrebleClef(canvas, 0, on_all=True)
+	canvas = noter.addTitle(canvas, "This Kind of Graphic Score")
+	canvas = noter.addComposer(
+	canvas, "You", pageAlignValue=4.75
+	)
+	canvas = noter.addInstrumentTextAtIndent(
+	canvas, "Instrument Name   ", staffLineCoords, 0
+	)
+
+	notes = np.random.randint(58, 80, size=45)
+	sharpOrFlat = np.random.choice(["sharp", "flat"], size=45)
+	horzPositions = np.random.random_sample(size=45) * 0.8 + 0.1
+	horzPositions = np.sort(horzPositions.reshape(9, 5), axis=1)
+	arrayOfSystemNumbers = np.repeat(np.arange(0, 9), 5)
+
+
+	for i in range(len(notes)):
+	canvas = noter.applyNoteheadAt(
+	canvas,
+	arrayOfSystemNumbers[i],
+	horzPositions[arrayOfSystemNumbers[i], i % 5],
+	int(notes[i]),
+	sharp_or_flat=sharpOrFlat[i],
+	notehead_type=np.random.choice([...]),
+	)
+
+	dictionaryOfPlacedNotes, numberOfPlacedNotes = noter.getPlacedNotes()
+	...
+	canvas = noter.drawLineAcrossMultipleNotes(
+	canvas, arrayOfNotes, dictionaryOfPlacedNotes, color="blue", line_width=1
+	)
+	...
+
+	canvas.save(GLOBAL_SAVENAME)
+	print(f"{GLOBAL_SAVENAME} saved to disk.")
+\end{ffcode}
+
+\newpage
+Genere also comes with a trainable Markov Model. Here is an example of the output of the Markov Model using Genere:
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\columnwidth]{images/markovmodel_score.png}
+	\caption{A showcase of the Markov Model feature in Genere.}
+\end{figure}
+\newpage
+The code used to generate this is as such:
+\begin{ffcode}
+	GLOBAL_SAVENAME = "markovmodel_score.png"
+	canvas, staffLineCoords = createcanvas.returnCanvas(
+	"A4", "portrait", saveRawCanvas=False, indentation=True
+	)
+	noter = notationplacer.notationPlacer(canvas, staffLineCoords)
+	canvas = noter.applyTrebleClef(canvas, 0, on_all=True)
+	canvas = noter.addTitle(canvas, "Markov Model In Action")
+	canvas = noter.addComposer(canvas, "Composer Name", pageAlignValue=4.75)
+	canvas = noter.addInstrumentTextAtIndent(canvas, "Instrument Name", staffLineCoords, 0)
+	markov = markovmodels.MarkovModel()
+	rhythms, pitch, abspitch, octaves = markov.learnFromMidi(
+	"frenchsuite.midi"
+	)
+	# markov.plotMatrices()  # uncomment this to see the matrices
+	...
+	outputPitch, outputRhythm, outputOctave = markov.returnNextPitch()
+	...
+	canvas.save(GLOBAL_SAVENAME)
+	print(f"{GLOBAL_SAVENAME} saved to disk.")
+\end{ffcode}
+
+\section{Future Work and Conclusions}
+As shown above, MRCV is a software tool that uses AI and ML to help users create music, sounds, and virtual instruments. It is designed to be user-friendly for people with different levels of experience, and its main goal is to encourage creativity. MRCV allows users to customize input datasets and offers many options for each neural network. The documentation is designed to be easy to understand and abstracts technical details. MRCV is open source, meaning users can contribute to its development and the community can benefit from each other's experience.
+
+For future work on the system, users can:
+\begin{itemize}
+	\item Add more neural networks in the form of trained models (in \texttt{.h5} or \texttt{.json} (for realtime audio) format)
+	\item Add more features to Genere (such as the ability to generate a vector image, it is currently a bitmap)
+	\item Add more features via requests on the GitHub page or answer feature requests.
+	\item Spread the word to other people who may be interested in using MRCV, as an introduction to AI and ML in music.
+\end{itemize}
 
 \bibliographystyle{unsrtnat}
 \bibliography{references}
-
 
 
 

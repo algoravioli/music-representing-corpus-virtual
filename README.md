@@ -17,6 +17,8 @@ We present a number of use cases that is encompassed within the scope/remit of t
 - **Procedural Score Generation**
   - This is done through the `./genere/` part of the codebase.
 
+
+Feel free to read the [paper](https://tinyurl.com/3adsxybz) for further formal clarification on any of the topics within. 
 ## Table of Contents
 * **[Starting from Absolute Zero](#starting-from-absolute-zero)**
   * **[Mac OS](#mac-os)**
