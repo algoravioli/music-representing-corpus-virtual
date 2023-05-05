@@ -14,3 +14,4 @@ graphic_score--Generic.png
 .gitignore
 concert_files/*
 env/*
+wiki-edits/*

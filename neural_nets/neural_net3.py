@@ -24,7 +24,7 @@ activations_list = ["tanh", "relu", "sigmoid", "linear"]
 activation = activations_list[
     0  # change this from 0 - 3 to change the activation function
 ]
-# We will call the number of inputs: MEMORY
+# We will call the number of inputs: MEMORY # max 8 
 MEMORY = 8
 model = Creator().createModelForNeuralNet3(4, MEMORY, activation=activation, scaler=2)
 
